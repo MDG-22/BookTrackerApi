@@ -2,6 +2,7 @@
 using Application.Models;
 using Application.Models.Requests;
 using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Repositories;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,18 @@ namespace Application.Services
 
         public LectureService(ILectureRepository lectureRepository)
         {
+            
             _lectureRepository = lectureRepository;
         }
 
         public IEnumerable<LectureDto> GetAll()
         {
             var lectures = _lectureRepository.GetAll();
+
+            if (!lectures.Any())
+            {
+                throw new NotFoundException("NO_LECTURES_FOUND");
+            }
 
             return lectures.Select(LectureDto.ToDto);
         }
