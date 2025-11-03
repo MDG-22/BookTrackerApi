@@ -11,8 +11,8 @@ namespace Application.Interfaces
     {
         IEnumerable<BookDto> GetAllBooks();
         BookDto GetBookbyId(int id);
-        BookDto CreateBook(BookDto book);
-        BookDto UpdateBook(BookDto book);
+        BookDto CreateBook(BookCreateAndUpdateRequest book);
+        BookDto UpdateBook(int id, BookCreateAndUpdateRequest bookUpdateRequest);
         void DeleteBook(int id);
         IEnumerable<BookDto> SearchByTitle(string titleForSearch);
     }

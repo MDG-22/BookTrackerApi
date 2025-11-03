@@ -38,7 +38,7 @@ namespace Web.Controllers
 
         // POST: api/book
         [HttpPost]
-        public ActionResult<BookDto> CreateBook(BookDto request)
+        public ActionResult<BookDto> CreateBook(BookCreateAndUpdateRequest request)
         {
             var book = _bookService.CreateBook(request);
             return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
@@ -46,10 +46,11 @@ namespace Web.Controllers
 
         // PUT: api/book/5
         [HttpPut("{id}")]
-        public IActionResult UpdateBook(int id, BookDto book)
+        public IActionResult UpdateBook(int id, BookCreateAndUpdateRequest book)
         {
-            _bookService.UpdateBook(book);
-            return NoContent();
+            _bookService.UpdateBook(id, book);
+            var updatedBook = _bookService.GetBookbyId(id);
+            return Ok(updatedBook);
         }
 
         // DELETE: api/book/5

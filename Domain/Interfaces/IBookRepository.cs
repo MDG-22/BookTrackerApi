@@ -14,6 +14,7 @@ namespace Domain.Interfaces
         Book Create(Book book);
         Book? Update(Book book);
         void Delete(int id);
+        IEnumerable<Book> SearchByTitle(string titleForSearch);
     }
 
 }
