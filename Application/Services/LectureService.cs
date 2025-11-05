@@ -4,11 +4,8 @@ using Application.Models.Requests;
 using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
@@ -18,7 +15,6 @@ namespace Application.Services
 
         public LectureService(ILectureRepository lectureRepository)
         {
-            
             _lectureRepository = lectureRepository;
         }
 
@@ -27,22 +23,25 @@ namespace Application.Services
             var lectures = _lectureRepository.GetAll();
 
             if (!lectures.Any())
-            {
-                throw new NotFoundException("NO_LECTURES_FOUND");
-            }
+                throw new NotFoundException("No lectures found in the database.", "NO_LECTURES_FOUND");
 
             return lectures.Select(LectureDto.ToDto);
         }
 
-        public LectureDto? GetbyId(int id)
+        public LectureDto GetbyId(int id)
         {
             var lecture = _lectureRepository.GetbyId(id);
+            if (lecture == null)
+                throw new NotFoundException($"Lecture with ID {id} not found.", "LECTURE_NOT_FOUND");
 
             return LectureDto.ToDto(lecture);
         }
-        
+
         public LectureDto Create(LectureDto dto)
         {
+            if (dto.Rating is < 0 or > 10)
+                throw new AppValidationException("Rating must be between 0 and 10.", "INVALID_RATING");
+
             var newLecture = new Lecture
             {
                 Rating = dto.Rating,
@@ -52,13 +51,17 @@ namespace Application.Services
             };
 
             _lectureRepository.Create(newLecture);
-
             return LectureDto.ToDto(newLecture);
         }
-        
-        public LectureDto? Update(int id, LectureUpdateRequest dto)
+
+        public LectureDto Update(int id, LectureUpdateRequest dto)
         {
             var lecture = _lectureRepository.GetbyId(id);
+            if (lecture == null)
+                throw new NotFoundException($"Lecture with ID {id} not found.", "LECTURE_NOT_FOUND");
+
+            if (dto.Rating.HasValue && (dto.Rating < 0 || dto.Rating > 10))
+                throw new AppValidationException("Rating must be between 0 and 10.", "INVALID_RATING");
 
             if (dto.Rating.HasValue)
                 lecture.Rating = dto.Rating;
@@ -72,13 +75,16 @@ namespace Application.Services
             if (dto.FinishDate.HasValue)
                 lecture.FinishDate = dto.FinishDate;
 
-            //var updatedLecture = _lectureRepository.Update(lecture);
-
-            return LectureDto.ToDto(lecture);
+            var updated = _lectureRepository.Update(lecture);
+            return LectureDto.ToDto(updated);
         }
-        
+
         public void Delete(int id)
         {
+            var lecture = _lectureRepository.GetbyId(id);
+            if (lecture == null)
+                throw new NotFoundException($"Lecture with ID {id} not found.", "LECTURE_NOT_FOUND");
+
             _lectureRepository.Delete(id);
         }
     }
