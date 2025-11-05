@@ -19,14 +19,14 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<BookDto>> GetBooks()
+        public IActionResult GetBooks()
         {
             var books = _bookService.GetAllBooks();
             return Ok(books);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<BookDto> GetBook(int id)
+        public IActionResult GetBook(int id)
         {
             var book = _bookService.GetBookbyId(id);
             if (book == null)
@@ -37,7 +37,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult<BookDto> CreateBook(BookCreateAndUpdateRequest request)
+        public IActionResult CreateBook(BookCreateAndUpdateRequest request)
         {
             var book = _bookService.CreateBook(request);
             return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
@@ -59,7 +59,7 @@ namespace Web.Controllers
         }
 
         [HttpGet("search")]
-        public ActionResult<IEnumerable<BookDto>> SearchBooks(string title)
+        public IActionResult SearchBooks(string title)
         {
             var books = _bookService.SearchByTitle(title);
             return Ok(books);
