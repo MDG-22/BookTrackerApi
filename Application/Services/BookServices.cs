@@ -12,6 +12,7 @@ using Domain.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Common;
+using Domain.Exceptions;
 
 namespace Application.Services
 {
@@ -32,11 +33,11 @@ namespace Application.Services
         public BookDto GetBookbyId(int id)
         {
             var book = _bookRepository.GetbyId(id);
-            if (book != null)
+            if (book == null)
             {
-                return BookDto.ToDto(book);
+                throw new NotFoundException("BOOK_NOT_FOUND", $"ID_{id}");
             }
-            return null;
+            return BookDto.ToDto(book);
         }
 
         public BookDto CreateBook(BookCreateAndUpdateRequest bookRequest)

@@ -37,7 +37,7 @@ namespace Web.Controllers
 
             var token = _jwtService.GenerateToken(user);
 
-            return Ok(new AuthenticationDto
+            return Ok(new AuthResponse
             {
                 Token = token,
                 //User = UserDto.ToDto(user)
@@ -62,7 +62,7 @@ namespace Web.Controllers
 
             var token = _jwtService.GenerateToken(UserDto.ToEntity(newUser));
 
-            return Ok(new AuthenticationDto
+            return Ok(new AuthResponse
             {
                 Token = token,
                 //User = newUser
