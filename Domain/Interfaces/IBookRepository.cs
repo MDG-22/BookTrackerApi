@@ -7,13 +7,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces
 {
-    public interface IBookRepository
+    public interface IBookRepository : IRepository<Book>
     {
-        IEnumerable<Book> GetAll();
-        Book? GetbyId(int id);
-        Book Create(Book book);
-        Book? Update(Book book);
-        void Delete(int id);
         IEnumerable<Book> SearchByTitle(string titleForSearch);
     }
 

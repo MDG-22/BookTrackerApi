@@ -2,7 +2,7 @@
 using Application.Models;
 using Application.Models.Requests;
 using Domain.Entities;
-using Domain.Repositories;
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
