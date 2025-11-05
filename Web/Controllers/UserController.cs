@@ -9,7 +9,6 @@ namespace Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -19,7 +18,6 @@ namespace Web.Controllers
             _userService = userService;
         }
 
-        [Authorize]
         [HttpGet]
         public IActionResult GetUsers()
         {
@@ -54,7 +52,6 @@ namespace Web.Controllers
             return Ok(updatedUser);
         }
 
-        [Authorize]
         [HttpDelete]
         public IActionResult DeleteUser(int id)
         {

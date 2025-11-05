@@ -1,5 +1,6 @@
 using Application.Interfaces;
 using Application.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;
@@ -16,7 +18,6 @@ namespace Web.Controllers
             _bookService = bookService;
         }
 
-        // GET: api/book
         [HttpGet]
         public ActionResult<IEnumerable<BookDto>> GetBooks()
         {
@@ -24,7 +25,6 @@ namespace Web.Controllers
             return Ok(books);
         }
 
-        // GET: api/book/5
         [HttpGet("{id}")]
         public ActionResult<BookDto> GetBook(int id)
         {
@@ -36,7 +36,6 @@ namespace Web.Controllers
             return Ok(book);
         }
 
-        // POST: api/book
         [HttpPost]
         public ActionResult<BookDto> CreateBook(BookCreateAndUpdateRequest request)
         {
@@ -44,7 +43,6 @@ namespace Web.Controllers
             return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
         }
 
-        // PUT: api/book/5
         [HttpPut("{id}")]
         public IActionResult UpdateBook(int id, BookCreateAndUpdateRequest book)
         {
@@ -53,7 +51,6 @@ namespace Web.Controllers
             return Ok(updatedBook);
         }
 
-        // DELETE: api/book/5
         [HttpDelete("{id}")]
         public IActionResult DeleteBook(int id)
         {
@@ -61,7 +58,6 @@ namespace Web.Controllers
             return NoContent();
         }
 
-        // GET: api/book/search?title=book
         [HttpGet("search")]
         public ActionResult<IEnumerable<BookDto>> SearchBooks(string title)
         {

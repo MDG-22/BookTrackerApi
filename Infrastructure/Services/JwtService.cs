@@ -29,8 +29,12 @@ namespace Infrastructure.Services
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET")
+                ?? _config["Jwt:Secret"];
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
 
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],

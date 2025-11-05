@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Repositories;
+using Infrastructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,64 +11,52 @@ namespace Infrastructure.Repositories
 {
     public class LectureRepository : ILectureRepository
     {
-        private static List<Lecture> lectureRepository = new List<Lecture>()
+        private readonly ApplicationContext _db;
+
+        public LectureRepository(ApplicationContext db)
         {
-            new Lecture
-            {
-                Id = 1,
-                Rating = 3,
-                PageCount = 10,
-                StartDate = DateTime.Now
-            },
-            new Lecture
-            {
-                Id = 2,
-                Rating = 5,
-                PageCount = 123
-            }
-        };
+            _db = db;
+        }
 
         public IEnumerable<Lecture> GetAll()
         {
-            return lectureRepository;
+            return _db.Lectures.ToList();
         }
         
         public Lecture? GetbyId(int id)
         {
-            return lectureRepository.FirstOrDefault(l => l.Id == id);
+            var lecture = _db.Lectures.FirstOrDefault(l => l.Id == id);
+
+            return lecture;
         }
         
         public Lecture Create(Lecture lecture)
         {
-            lecture.Id = lectureRepository.Max(l => l.Id) + 1;
-
-            lectureRepository.Add(lecture);
-
+            _db.Lectures.Add(lecture);
+            _db.SaveChanges();
             return lecture;
         }
         
         public Lecture? Update(Lecture lecture)
         {
-            var updatedLecture = lectureRepository.FirstOrDefault(l => l.Id == lecture.Id);
-
+            var updatedLecture = _db.Lectures.FirstOrDefault(l => l.Id == lecture.Id);
             if (updatedLecture == null)
             {
+
                 return null;
             }
 
-            updatedLecture.Rating = lecture.Rating;
-            updatedLecture.PageCount = lecture.PageCount;
-            updatedLecture.StartDate = lecture.StartDate;
-            updatedLecture.FinishDate = lecture.FinishDate;
-
+            _db.Lectures.Update(lecture);
+            _db.SaveChanges();
             return updatedLecture;
         }
         
         public void Delete(int id)
         {
-            var lecture = lectureRepository.FirstOrDefault(l => l.Id == id);
+            var lecture = _db.Lectures.FirstOrDefault(l => l.Id == id);
 
-            lectureRepository.Remove(lecture);
+            _db.Lectures.Remove(lecture);
+            _db.SaveChanges();
         }
 
     }

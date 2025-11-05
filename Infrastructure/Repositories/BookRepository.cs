@@ -29,7 +29,9 @@ namespace Infrastructure.Repositories
 
         public Book? GetbyId(int id)
         {
-            return _db.Books.FirstOrDefault(b => b.Id == id);
+            var book = _db.Books.FirstOrDefault(b => b.Id == id);
+
+            return book;
         }
 
         public Book Create(Book book)
