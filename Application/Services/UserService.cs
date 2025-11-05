@@ -14,6 +14,12 @@ namespace Application.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+
+        public UserService(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public IEnumerable<UserDto> GetUsers()
         {
             var users = _userRepository.GetAll();
@@ -26,17 +32,9 @@ namespace Application.Services
 
             return UserDto.ToDto(user);
         }
-        public UserDto CreateUser(UserDto dto)
+        public UserDto CreateUser(UserCreateRequest dto)
         {
-            var newUser = new User
-            {
-                Username = dto.Username,
-                Email = dto.Email,
-                AvatarUrl = dto.AvatarUrl,
-                Description = dto.Description,
-                Role = dto.Role,
-                CreatedAt = dto.CreatedAt
-            };
+            var newUser = dto.ToEntity();
 
             _userRepository.Create(newUser);
 

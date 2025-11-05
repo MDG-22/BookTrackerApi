@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models;
 using Application.Models.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -17,6 +19,7 @@ namespace Web.Controllers
             _userService = userService;
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult GetUsers()
         {
@@ -34,7 +37,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUser(UserDto dto)
+        public IActionResult CreateUser(UserCreateRequest dto)
         {
             var newUser = _userService.CreateUser(dto);
 
@@ -51,6 +54,7 @@ namespace Web.Controllers
             return Ok(updatedUser);
         }
 
+        [Authorize]
         [HttpDelete]
         public IActionResult DeleteUser(int id)
         {

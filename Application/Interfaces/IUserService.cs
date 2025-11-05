@@ -12,7 +12,7 @@ namespace Application.Interfaces
     {
         IEnumerable<UserDto> GetUsers();
         UserDto? GetUserById(int id);
-        UserDto CreateUser(UserDto dto);
+        UserDto CreateUser(UserCreateRequest dto);
         UserDto? UpdateUser(int id, UserUpdateRequest dto);
         void DeleteUser(int id);
     }
