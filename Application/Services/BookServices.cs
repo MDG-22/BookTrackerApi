@@ -6,10 +6,6 @@ using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data.Common;
-using Domain.Exceptions;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Application.Services
 {
@@ -25,19 +21,14 @@ namespace Application.Services
         public IEnumerable<BookDto> GetAllBooks()
         {
             var books = _bookRepository.GetAll();
-
-            if (!books.Any())
-                throw new NotFoundException("No books found in the database.", "NO_BOOKS_FOUND");
-
             return books.Select(BookDto.ToDto);
         }
 
         public BookDto GetBookbyId(int id)
         {
             var book = _bookRepository.GetbyId(id);
-
             if (book == null)
-                throw new NotFoundException($"Book with ID {id} not found.", "BOOK_NOT_FOUND");
+                throw new NotFoundException($"Book with id {id} not found", "BOOK_NOT_FOUND");
 
             return BookDto.ToDto(book);
         }
@@ -45,7 +36,7 @@ namespace Application.Services
         public BookDto CreateBook(BookCreateAndUpdateRequest bookRequest)
         {
             if (string.IsNullOrWhiteSpace(bookRequest.Title))
-                throw new AppValidationException("Book title cannot be empty.", "INVALID_TITLE");
+                throw new AppValidationException("Book title cannot be empty", "BOOK_TITLE_REQUIRED");
 
             var newBook = new Book
             {
@@ -55,23 +46,22 @@ namespace Application.Services
                 CoverUrl = bookRequest.CoverUrl
             };
 
-            _bookRepository.Create(newBook);
-            return BookDto.ToDto(newBook);
+            var created = _bookRepository.Create(newBook);
+            return BookDto.ToDto(created);
         }
 
-        public BookDto UpdateBook(int id, BookCreateAndUpdateRequest bookDto)
+        public BookDto UpdateBook(int id, BookCreateAndUpdateRequest bookRequest)
         {
             var book = _bookRepository.GetbyId(id);
             if (book == null)
-                throw new NotFoundException($"Book with ID {id} not found.", "BOOK_NOT_FOUND");
+                throw new NotFoundException($"Book with id {id} not found", "BOOK_NOT_FOUND");
 
-            if (string.IsNullOrWhiteSpace(bookDto.Title))
-                throw new AppValidationException("Book title cannot be empty.", "INVALID_TITLE");
+            if (!string.IsNullOrWhiteSpace(bookRequest.Title))
+                book.Title = bookRequest.Title;
 
-            book.Title = bookDto.Title;
-            book.Pages = bookDto.Pages;
-            book.Summary = bookDto.Summary;
-            book.CoverUrl = bookDto.CoverUrl;
+            book.Pages = bookRequest.Pages;
+            book.Summary = bookRequest.Summary;
+            book.CoverUrl = bookRequest.CoverUrl;
 
             var updated = _bookRepository.Update(book);
             return BookDto.ToDto(updated);
@@ -81,20 +71,14 @@ namespace Application.Services
         {
             var book = _bookRepository.GetbyId(id);
             if (book == null)
-                throw new NotFoundException($"Book with ID {id} not found.", "BOOK_NOT_FOUND");
+                throw new NotFoundException($"Book with id {id} not found", "BOOK_NOT_FOUND");
 
             _bookRepository.Delete(id);
         }
 
         public IEnumerable<BookDto> SearchByTitle(string titleForSearch)
         {
-            if (string.IsNullOrWhiteSpace(titleForSearch))
-                throw new AppValidationException("Search title cannot be empty.", "EMPTY_SEARCH");
-
             var books = _bookRepository.SearchByTitle(titleForSearch);
-            if (!books.Any())
-                throw new NotFoundException($"No books found with title '{titleForSearch}'.", "NO_RESULTS");
-
             return books.Select(BookDto.ToDto);
         }
     }

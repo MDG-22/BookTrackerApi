@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,6 @@ namespace Application.Models.Requests
         public int? PageCount { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? FinishDate { get; set; }
+        public LectureStatus Status { get; set; }
     }
 }

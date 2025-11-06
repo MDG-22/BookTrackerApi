@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20251106001744_AddUserLectureBookRelation")]
+    partial class AddUserLectureBookRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
@@ -33,26 +36,6 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Authors");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Autor de fantasía épica",
-                            Name = "J. R. R. Tolkien"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Reina del misterio",
-                            Name = "Agatha Christie"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "Autor de distopías y ensayo político",
-                            Name = "George Orwell"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Book", b =>
@@ -92,33 +75,6 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Fantasía"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Ciencia Ficción"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "Misterio"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Description = "No Ficción"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Description = "Distopía"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Lecture", b =>
@@ -129,10 +85,6 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<int>("BookId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("BookTitle")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("FinishDate")
                         .HasColumnType("TEXT");

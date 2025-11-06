@@ -24,6 +24,6 @@ namespace Domain.Entities
         public DateTime CreatedAt { get; set; }
 
         // lista de lecturas inicializada vacia
-        //public List<Lecture> Lectures { get; set; } = new List<Lecture>();
+        public List<Lecture> Lectures { get; set; } = new List<Lecture>();
     }
 }

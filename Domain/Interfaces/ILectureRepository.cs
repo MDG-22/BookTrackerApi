@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace Domain.Interfaces
 {
     public interface ILectureRepository : IRepository<Lecture>
     {
+        IEnumerable<Lecture> FilterByStatus(LectureStatus? status, int userId);
 
     }
 }

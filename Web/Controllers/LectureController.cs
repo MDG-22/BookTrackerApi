@@ -1,8 +1,11 @@
 ﻿using Application.Interfaces;
 using Application.Models;
 using Application.Models.Requests;
+using Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Web.Controllers
 {
@@ -34,19 +37,24 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(LectureDto dto)
+        [Authorize]
+        public IActionResult CreateLecture([FromBody] LectureCreateRequest request)
         {
-            var newLecture = _lectureService.Create(dto);
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (userIdClaim == null) return Unauthorized();
 
-            return CreatedAtAction(nameof(GetbyId), new { id = newLecture.Id }, newLecture);
+            int userId = int.Parse(userIdClaim.Value);
+
+            var lecture = _lectureService.CreateLecture(userId, request);
+            return Ok(lecture);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody]LectureUpdateRequest dto)
-        {
-            var lecture = _lectureService.GetbyId(id);
 
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] LectureUpdateRequest dto)
+        {
             var updatedLecture = _lectureService.Update(id, dto);
+            if (updatedLecture == null) return NotFound();
 
             return Ok(updatedLecture);
         }
@@ -57,6 +65,13 @@ namespace Web.Controllers
             _lectureService.Delete(id);
 
             return NoContent();
+        }
+
+        [HttpGet("filter")]
+        public IActionResult FilterByStatus([FromQuery] LectureStatus? status, [FromQuery] int userId)
+        {
+            var result = _lectureService.FilterByStatus(status, userId);
+            return Ok(result);
         }
     }
 }

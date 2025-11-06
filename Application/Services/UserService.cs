@@ -4,6 +4,7 @@ using Application.Models.Requests;
 using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,10 +22,6 @@ namespace Application.Services
         public IEnumerable<UserDto> GetUsers()
         {
             var users = _userRepository.GetAll();
-
-            if (!users.Any())
-                throw new NotFoundException("No users found in the database.", "NO_USERS_FOUND");
-
             return users.Select(UserDto.ToDto);
         }
 
@@ -32,26 +29,18 @@ namespace Application.Services
         {
             var user = _userRepository.GetbyId(id);
             if (user == null)
-                throw new NotFoundException($"User with ID {id} not found.", "USER_NOT_FOUND");
+                throw new NotFoundException($"User with id {id} not found", "USER_NOT_FOUND");
 
             return UserDto.ToDto(user);
         }
 
         public UserDto CreateUser(UserCreateRequest dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Email))
-                throw new AppValidationException("Email cannot be empty.", "INVALID_EMAIL");
-
             if (string.IsNullOrWhiteSpace(dto.Username))
-                throw new AppValidationException("Username cannot be empty.", "INVALID_USERNAME");
+                throw new AppValidationException("Username cannot be empty", "USERNAME_REQUIRED");
 
-            var existingUser = _userRepository.GetAll().FirstOrDefault(u => u.Email == dto.Email);
-            if (existingUser != null)
-                throw new AppValidationException($"Email '{dto.Email}' is already registered.", "EMAIL_ALREADY_EXISTS");
-
-            var newUser = dto.ToEntity();
-            _userRepository.Create(newUser);
-
+            var user = dto.ToEntity();
+            var newUser = _userRepository.Create(user);
             return UserDto.ToDto(newUser);
         }
 
@@ -59,16 +48,22 @@ namespace Application.Services
         {
             var user = _userRepository.GetbyId(id);
             if (user == null)
-                throw new NotFoundException($"User with ID {id} not found.", "USER_NOT_FOUND");
+                throw new NotFoundException($"User with id {id} not found", "USER_NOT_FOUND");
 
             if (!string.IsNullOrWhiteSpace(dto.Username))
+            {
                 user.Username = dto.Username;
+            }
 
             if (!string.IsNullOrWhiteSpace(dto.AvatarUrl))
+            {
                 user.AvatarUrl = dto.AvatarUrl;
+            }
 
             if (!string.IsNullOrWhiteSpace(dto.Description))
+            {
                 user.Description = dto.Description;
+            }
 
             var updatedUser = _userRepository.Update(user);
             return UserDto.ToDto(updatedUser);
@@ -78,7 +73,7 @@ namespace Application.Services
         {
             var user = _userRepository.GetbyId(id);
             if (user == null)
-                throw new NotFoundException($"User with ID {id} not found.", "USER_NOT_FOUND");
+                throw new NotFoundException($"User with id {id} not found", "USER_NOT_FOUND");
 
             _userRepository.Delete(id);
         }
