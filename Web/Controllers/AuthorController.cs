@@ -1,7 +1,6 @@
 using Application.Interfaces;
 using Application.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace Web.Controllers
 {
@@ -16,7 +15,6 @@ namespace Web.Controllers
             _authorService = authorService;
         }
 
-        
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -24,16 +22,32 @@ namespace Web.Controllers
             return Ok(authors);
         }
 
-        
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var author = _authorService.GetbyId(id);
-            if (author == null) 
-            {
-                return NotFound();
-            }
             return Ok(author);
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] AuthorDto dto)
+        {
+            var created = _authorService.Create(dto);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] AuthorDto dto)
+        {
+            var updated = _authorService.Update(id, dto);
+            return Ok(updated);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _authorService.Delete(id);
+            return NoContent();
         }
     }
 }

@@ -9,8 +9,7 @@ namespace Infrastructure.Repositories
 {
     public class AuthorRepository : Repository<Author>, IAuthorRepository
     {
-       
-         public AuthorRepository(ApplicationContext db) : base(db)
+        public AuthorRepository(ApplicationContext db) : base(db)
         {
         }
     }

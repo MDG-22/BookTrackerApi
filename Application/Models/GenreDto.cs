@@ -13,7 +13,6 @@ namespace Application.Models
         public string? Description { get; set; }
 
 
-
         public static GenreDto ToDto(Genre genre)
         {
             return new GenreDto

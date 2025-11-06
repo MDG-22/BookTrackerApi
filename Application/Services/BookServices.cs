@@ -1,18 +1,12 @@
 using Application.Interfaces;
 using Application.Models;
 using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Application.Interfaces;
-using Application.Models;
-using Domain.Entities;
-using Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
 using System.Data.Common;
-using Domain.Exceptions;
 
 namespace Application.Services
 {
@@ -73,6 +67,7 @@ namespace Application.Services
 
         public void DeleteBook(int id)
         {
+
             _bookRepository.Delete(id);
         }
 

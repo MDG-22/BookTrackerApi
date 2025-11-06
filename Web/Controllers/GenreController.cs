@@ -1,7 +1,6 @@
 using Application.Interfaces;
 using Application.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace Web.Controllers
 {
@@ -16,7 +15,6 @@ namespace Web.Controllers
             _genreService = genreService;
         }
 
-        
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -24,16 +22,32 @@ namespace Web.Controllers
             return Ok(genres);
         }
 
-        
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var genre = _genreService.GetbyId(id);
-            if (genre == null) 
-            {
-                return NotFound();
-            }
             return Ok(genre);
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] GenreDto dto)
+        {
+            var created = _genreService.Create(dto);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] GenreDto dto)
+        {
+            var updated = _genreService.Update(id, dto);
+            return Ok(updated);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _genreService.Delete(id);
+            return NoContent();
         }
     }
 }

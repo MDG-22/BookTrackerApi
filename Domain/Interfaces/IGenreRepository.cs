@@ -3,10 +3,7 @@ using System.Collections.Generic;
 
 namespace Domain.Interfaces
 {
-    // Repositorio SOLO LECTURA (no hereda de IRepository<T>)
-    public interface IGenreRepository
+    public interface IGenreRepository : IRepository<Genre>
     {
-        IEnumerable<Genre> GetAll();
-        Genre? GetbyId(int id);
     }
 }

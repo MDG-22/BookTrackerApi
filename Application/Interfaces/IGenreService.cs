@@ -1,17 +1,19 @@
-using Domain.Entities;
-using Domain.Interfaces;
-using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Application.Models;
+using Application.Models.Requests;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Infrastructure.Repositories
+namespace Application.Interfaces
 {
-    public class GenreRepository :  Repository<Genre>, IGenreRepository
+    public interface IGenreService
     {
-       
-         public GenreRepository(ApplicationContext db) : base(db)
-        {
-        }
+        IEnumerable<GenreDto> GetAll();
+        GenreDto? GetbyId(int id);
+        GenreDto Create(GenreDto genre);
+        GenreDto? Update(int id, GenreDto genre);
+        void Delete(int id);
     }
 }

@@ -1,5 +1,7 @@
 using Application.Interfaces;
 using Application.Models;
+using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,23 +10,65 @@ namespace Application.Services
 {
     public class GenreService : IGenreService
     {
-        private readonly IGenreRepository _repo;
+        private readonly IGenreRepository _genreRepository;
 
-        public GenreService(IGenreRepository repo)
+        public GenreService(IGenreRepository genreRepository)
         {
-            _repo = repo;
+            _genreRepository = genreRepository;
         }
 
         public IEnumerable<GenreDto> GetAll()
         {
-            var genres = _repo.GetAll();
+            var genres = _genreRepository.GetAll();
             return genres.Select(GenreDto.ToDto);
         }
 
         public GenreDto? GetbyId(int id)
         {
-            var genre = _repo.GetbyId(id);
-            return genre == null ? null : GenreDto.ToDto(genre);
+            var genre = _genreRepository.GetbyId(id);
+            if (genre == null)
+            {
+                throw new NotFoundException("GENRE_NOT_FOUND", $"ID_{id}");
+            }
+            return GenreDto.ToDto(genre);
+        }
+
+        public GenreDto Create(GenreDto genre)
+        {
+            var newGenre = new Genre
+            {
+                Id = genre.Id,
+                Description = genre.Description
+            };
+
+            _genreRepository.Create(newGenre);
+
+            return GenreDto.ToDto(newGenre);
+        }
+
+        public GenreDto? Update(int id, GenreDto dto)
+        {
+            var genre = _genreRepository.GetbyId(id);
+            if (genre == null)
+            {
+                throw new NotFoundException("GENRE_NOT_FOUND", $"ID_{id}");
+            }
+
+            genre.Description = dto.Description;
+
+            var updated = _genreRepository.Update(genre);
+            return GenreDto.ToDto(updated);
+        }
+
+        public void Delete(int id)
+        {
+            var genre = _genreRepository.GetbyId(id);
+            if (genre == null)
+            {
+                throw new NotFoundException("GENRE_NOT_FOUND", $"ID_{id}");
+            }
+
+            _genreRepository.Delete(id);
         }
     }
 }

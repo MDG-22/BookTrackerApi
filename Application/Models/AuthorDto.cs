@@ -14,7 +14,6 @@ namespace Application.Models
         public string? Description { get; set; }
 
 
-
         public static AuthorDto ToDto(Author author)
         {
             return new AuthorDto
