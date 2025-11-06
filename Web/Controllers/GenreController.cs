@@ -28,26 +28,5 @@ namespace Web.Controllers
             var genre = _genreService.GetbyId(id);
             return Ok(genre);
         }
-
-        [HttpPost]
-        public IActionResult Create([FromBody] GenreDto dto)
-        {
-            var created = _genreService.Create(dto);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] GenreDto dto)
-        {
-            var updated = _genreService.Update(id, dto);
-            return Ok(updated);
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _genreService.Delete(id);
-            return NoContent();
-        }
     }
 }

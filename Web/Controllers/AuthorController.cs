@@ -28,26 +28,5 @@ namespace Web.Controllers
             var author = _authorService.GetbyId(id);
             return Ok(author);
         }
-
-        [HttpPost]
-        public IActionResult Create([FromBody] AuthorDto dto)
-        {
-            var created = _authorService.Create(dto);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] AuthorDto dto)
-        {
-            var updated = _authorService.Update(id, dto);
-            return Ok(updated);
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _authorService.Delete(id);
-            return NoContent();
-        }
     }
 }
