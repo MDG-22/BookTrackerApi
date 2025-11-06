@@ -40,7 +40,7 @@ namespace Web.Controllers
             return Ok(new AuthResponse
             {
                 Token = token,
-                //User = UserDto.ToDto(user)
+                User = UserDto.ToDto(user)
             });
         }
 
@@ -65,7 +65,7 @@ namespace Web.Controllers
             return Ok(new AuthResponse
             {
                 Token = token,
-                //User = newUser
+                User = newUser
             });
         }
     }

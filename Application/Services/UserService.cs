@@ -59,7 +59,7 @@ namespace Application.Services
                 user.Description = dto.Description;
             }
 
-            // var updatedUser = _userRepository.Update(user);
+             var updatedUser = _userRepository.Update(user);
 
             return UserDto.ToDto(user);
         }

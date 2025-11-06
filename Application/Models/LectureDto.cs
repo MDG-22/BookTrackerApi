@@ -14,6 +14,8 @@ namespace Application.Models
         public int? PageCount { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? FinishDate { get; set; }
+        public int UserId { get; set; }
+        public string BookTitle { get; set; } = string.Empty;
 
         public static LectureDto ToDto(Lecture entity)
         {
@@ -23,7 +25,9 @@ namespace Application.Models
                 Rating = entity.Rating,
                 PageCount = entity.PageCount,
                 StartDate = entity.StartDate,
-                FinishDate = entity.FinishDate
+                FinishDate = entity.FinishDate,
+                BookTitle = entity.Book?.Title,
+                UserId = entity.UserId
             };
         }
     }

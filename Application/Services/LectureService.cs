@@ -72,7 +72,7 @@ namespace Application.Services
             if (dto.FinishDate.HasValue)
                 lecture.FinishDate = dto.FinishDate;
 
-            //var updatedLecture = _lectureRepository.Update(lecture);
+            var updatedLecture = _lectureRepository.Update(lecture);
 
             return LectureDto.ToDto(lecture);
         }
