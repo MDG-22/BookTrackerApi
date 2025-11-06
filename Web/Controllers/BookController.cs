@@ -25,6 +25,7 @@ namespace Web.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public IActionResult GetBook(int id)
         {
             var book = _bookService.GetBookbyId(id);

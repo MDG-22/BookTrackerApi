@@ -26,40 +26,44 @@ namespace Application.Services
 
             if (!lectures.Any())
                 throw new NotFoundException("No lectures found", "LECTURES_NOT_FOUND");
+                throw new NotFoundException("NO_LECTURES_FOUND");
+            }
 
             return lectures.Select(LectureDto.ToDto);
-        }
 
+        public LectureDto? GetbyId(int id)
 
         public LectureDto? GetbyId(int id)
         {
             var lecture = _lectureRepository.GetbyId(id);
+            if (lecture == null)
+                throw new NotFoundException($"Lecture with ID {id} not found.", "LECTURE_NOT_FOUND");
 
             if (lecture == null)
                 throw new NotFoundException($"LECTURE_{id}_NOT_FOUND");
 
-            return LectureDto.ToDto(lecture);
-        }
 
         public Lecture CreateLecture(int userId, LectureCreateRequest request)
-        {
+        
             var book = _bookRepository.GetbyId(request.BookId);
             if (book == null)
                 throw new NotFoundException($"Book with id {request.BookId} not found", "BOOK_NOT_FOUND");
-
+                FinishDate = dto.FinishDate
             var lecture = request.ToEntity();
             lecture.UserId = userId;
             lecture.BookTitle = book.Title;
 
             var newLecture = _lectureRepository.Create(lecture);
             return newLecture;
-        }
+
 
         public LectureDto? Update(int id, LectureUpdateRequest dto)
-        {
-            var lecture = _lectureRepository.GetbyId(id);
+        
+        public LectureDto? Update(int id, LectureUpdateRequest dto)
             if (lecture == null)
                 throw new NotFoundException($"Lecture with id {id} not found", "LECTURE_NOT_FOUND");
+            if (dto.Rating.HasValue)
+                lecture.Rating = dto.Rating;
 
             if (dto.Rating.HasValue) lecture.Rating = dto.Rating.Value;
             if (dto.PageCount.HasValue) lecture.PageCount = dto.PageCount.Value;
@@ -73,22 +77,22 @@ namespace Application.Services
 
         public void Delete(int id)
         {
-            var lecture = _lectureRepository.GetbyId(id);
-
             if (lecture == null)
                 throw new NotFoundException($"LECTURE_{id}_NOT_FOUND");
 
             _lectureRepository.Delete(id);
-        }
+
 
         public IEnumerable<LectureDto> FilterByStatus(LectureStatus? status, int userId)
-        {
+        
             var lectures = _lectureRepository.FilterByStatus(status, userId);
 
             if (!lectures.Any())
                 throw new NotFoundException("NO_LECTURES_FOUND_FOR_FILTER");
 
             return lectures.Select(LectureDto.ToDto);
+        {
+            _lectureRepository.Delete(id);
         }
     }
 }

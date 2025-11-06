@@ -4,7 +4,6 @@ using Application.Models.Requests;
 using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -55,9 +54,7 @@ namespace Application.Services
                 throw new NotFoundException($"User with id {id} not found", "USER_NOT_FOUND");
 
             if (!string.IsNullOrWhiteSpace(dto.Username))
-            {
                 user.Username = dto.Username;
-            }
 
             if (!string.IsNullOrWhiteSpace(dto.AvatarUrl))
             {
@@ -65,9 +62,11 @@ namespace Application.Services
             }
 
             if (!string.IsNullOrWhiteSpace(dto.Description))
-            {
                 user.Description = dto.Description;
-            }
+
+            var updatedUser = _userRepository.Update(user);
+            return UserDto.ToDto(updatedUser);
+        }
 
             var updatedUser = _userRepository.Update(user);
             return UserDto.ToDto(updatedUser);
