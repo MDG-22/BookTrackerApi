@@ -14,5 +14,8 @@ namespace Domain.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
+
+        // lista de libros inicializada vacia
+        public List<Book> Books { get; set; } = new List<Book>();
     }
 }

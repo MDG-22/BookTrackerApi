@@ -13,5 +13,8 @@ namespace Application.Models
         public int Pages { get; set; }
         public string Summary { get; set; }
         public string? CoverUrl { get; set; }
+
+        public int AuthorId { get; set; }
+        public List<int> GenreIds { get; set; } = new List<int>();
     }
 }

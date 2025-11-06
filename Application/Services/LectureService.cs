@@ -29,7 +29,7 @@ namespace Application.Services
 
         public LectureDto? GetbyId(int id)
         {
-            var lecture = _lectureRepository.GetbyId(id);
+            var lecture = _lectureRepository.GetById(id);
             if (lecture == null)
                 throw new NotFoundException($"Lecture with id {id} not found", "LECTURE_NOT_FOUND");
 
@@ -38,7 +38,7 @@ namespace Application.Services
 
         public LectureDto CreateLecture(int userId, LectureCreateRequest request)
         {
-            var book = _bookRepository.GetbyId(request.BookId);
+            var book = _bookRepository.GetById(request.BookId);
             if (book == null)
                 throw new NotFoundException($"Book with id {request.BookId} not found", "BOOK_NOT_FOUND");
 
@@ -52,7 +52,7 @@ namespace Application.Services
 
         public LectureDto? Update(int id, LectureUpdateRequest dto)
         {
-            var lecture = _lectureRepository.GetbyId(id);
+            var lecture = _lectureRepository.GetById(id);
             if (lecture == null)
                 throw new NotFoundException($"Lecture with id {id} not found", "LECTURE_NOT_FOUND");
 
@@ -68,7 +68,7 @@ namespace Application.Services
 
         public void Delete(int id)
         {
-            var lecture = _lectureRepository.GetbyId(id);
+            var lecture = _lectureRepository.GetById(id);
             if (lecture == null)
                 throw new NotFoundException($"Lecture with id {id} not found", "LECTURE_NOT_FOUND");
 

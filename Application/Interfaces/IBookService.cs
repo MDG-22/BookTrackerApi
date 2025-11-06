@@ -15,5 +15,6 @@ namespace Application.Interfaces
         BookDto UpdateBook(int id, BookCreateAndUpdateRequest bookUpdateRequest);
         void DeleteBook(int id);
         IEnumerable<BookDto> SearchByTitle(string titleForSearch);
+        IEnumerable<BookDto> GetByGenre(int genreId);
     }
 }

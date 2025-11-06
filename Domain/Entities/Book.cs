@@ -18,5 +18,11 @@ namespace Domain.Entities
         public int Pages { get; set; }
         public string Summary { get; set; }
         public string? CoverUrl { get; set; }
+
+        // Autor
+        public int AuthorId { get; set; }
+        public Author? Author { get; set; }
+
+        public List<Genre> Genres { get; set; } = new List<Genre>();
     }
 }

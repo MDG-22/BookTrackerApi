@@ -27,7 +27,7 @@ namespace Application.Services
 
         public UserDto GetUserById(int id)
         {
-            var user = _userRepository.GetbyId(id);
+            var user = _userRepository.GetById(id);
             if (user == null)
                 throw new NotFoundException($"User with id {id} not found", "USER_NOT_FOUND");
 
@@ -46,7 +46,7 @@ namespace Application.Services
 
         public UserDto UpdateUser(int id, UserUpdateRequest dto)
         {
-            var user = _userRepository.GetbyId(id);
+            var user = _userRepository.GetById(id);
             if (user == null)
                 throw new NotFoundException($"User with id {id} not found", "USER_NOT_FOUND");
 
@@ -71,7 +71,7 @@ namespace Application.Services
 
         public void DeleteUser(int id)
         {
-            var user = _userRepository.GetbyId(id);
+            var user = _userRepository.GetById(id);
             if (user == null)
                 throw new NotFoundException($"User with id {id} not found", "USER_NOT_FOUND");
 

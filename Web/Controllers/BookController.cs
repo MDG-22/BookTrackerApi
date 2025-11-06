@@ -64,6 +64,13 @@ namespace Web.Controllers
             var books = _bookService.SearchByTitle(title);
             return Ok(books);
         }
+
+        [HttpGet("genre/{genreId}")]
+        public IActionResult GetBooksByGenre(int genreId)
+        {
+            var result = _bookService.GetByGenre(genreId);
+            return Ok(result);
+        }
     }
 
 }

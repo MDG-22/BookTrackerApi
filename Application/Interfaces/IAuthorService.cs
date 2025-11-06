@@ -6,7 +6,7 @@ namespace Application.Interfaces
     public interface IAuthorService
     {
         IEnumerable<AuthorDto> GetAll();
-        AuthorDto? GetbyId(int id);
+        AuthorDto? GetById(int id);
         AuthorDto Create(AuthorDto author);
         AuthorDto? Update(int id, AuthorDto author);
         void Delete(int id);

@@ -21,13 +21,13 @@ namespace Domain.Entities
         public DateTime? FinishDate { get; set; }
         public LectureStatus Status { get; set; }
 
-        //// User
+        // User
         public int UserId { get; set; }
         public User? User { get; set; }
 
-        //// Libro
+        // Libro
         public int BookId { get; set; }
         public Book? Book { get; set; }
-        public string BookTitle { get; set; }
+        public string? BookTitle { get; set; }
     }
 }

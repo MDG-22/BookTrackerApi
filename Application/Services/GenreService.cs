@@ -25,7 +25,7 @@ namespace Application.Services
 
         public GenreDto? GetbyId(int id)
         {
-            var genre = _genreRepository.GetbyId(id);
+            var genre = _genreRepository.GetById(id);
             if (genre == null)
             {
                 throw new NotFoundException("GENRE_NOT_FOUND", $"ID_{id}");
@@ -38,7 +38,7 @@ namespace Application.Services
             var newGenre = new Genre
             {
                 Id = genre.Id,
-                Description = genre.Description
+                GenreName = genre.GenreName
             };
 
             _genreRepository.Create(newGenre);
@@ -48,13 +48,13 @@ namespace Application.Services
 
         public GenreDto? Update(int id, GenreDto dto)
         {
-            var genre = _genreRepository.GetbyId(id);
+            var genre = _genreRepository.GetById(id);
             if (genre == null)
             {
                 throw new NotFoundException("GENRE_NOT_FOUND", $"ID_{id}");
             }
 
-            genre.Description = dto.Description;
+            genre.GenreName = dto.GenreName;
 
             var updated = _genreRepository.Update(genre);
             return GenreDto.ToDto(updated);
@@ -62,7 +62,7 @@ namespace Application.Services
 
         public void Delete(int id)
         {
-            var genre = _genreRepository.GetbyId(id);
+            var genre = _genreRepository.GetById(id);
             if (genre == null)
             {
                 throw new NotFoundException("GENRE_NOT_FOUND", $"ID_{id}");

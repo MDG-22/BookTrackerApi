@@ -16,8 +16,6 @@ namespace Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<Author>().HasData(
                 new Author { Id = 1, Name = "J. R. R. Tolkien", Description = "Autor de fantasía épica" },
                 new Author { Id = 2, Name = "Agatha Christie", Description = "Reina del misterio" },
@@ -25,11 +23,11 @@ namespace Infrastructure.Data
             );
 
             modelBuilder.Entity<Genre>().HasData(
-                new Genre { Id = 1, Description = "Fantasía" },
-                new Genre { Id = 2, Description = "Ciencia Ficción" },
-                new Genre { Id = 3, Description = "Misterio" },
-                new Genre { Id = 4, Description = "No Ficción" },
-                new Genre { Id = 5, Description = "Distopía" }
+                new Genre { Id = 1, GenreName = "Fantasía" },
+                new Genre { Id = 2, GenreName = "Ciencia Ficción" },
+                new Genre { Id = 3, GenreName = "Misterio" },
+                new Genre { Id = 4, GenreName = "No Ficción" },
+                new Genre { Id = 5, GenreName = "Distopía" }
             );
 
             modelBuilder.Entity<User>()
@@ -43,6 +41,28 @@ namespace Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(l => l.BookId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Book>()
+                .HasOne(b => b.Author)
+                .WithMany(a => a.Books)
+                .HasForeignKey(b => b.AuthorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Tabla intermedia Book-Genre
+            modelBuilder.Entity<Book>()
+                .HasMany(b => b.Genres)
+                .WithMany(g => g.Books)
+                .UsingEntity<Dictionary<string, object>>(
+                    "BookGenre",
+                    j => j.HasOne<Genre>()
+                          .WithMany()
+                          .HasForeignKey("GenreId")
+                          .OnDelete(DeleteBehavior.Cascade),
+                    j => j.HasOne<Book>()
+                          .WithMany()
+                          .HasForeignKey("BookId")
+                          .OnDelete(DeleteBehavior.Cascade)
+                );
 
             base.OnModelCreating(modelBuilder);
         }

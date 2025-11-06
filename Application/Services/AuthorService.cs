@@ -23,9 +23,9 @@ namespace Application.Services
             return authors.Select(AuthorDto.ToDto);
         }
 
-        public AuthorDto? GetbyId(int id)
+        public AuthorDto? GetById(int id)
         {
-            var author = _authorRepository.GetbyId(id);
+            var author = _authorRepository.GetById(id);
             if (author == null)
             {
                 throw new NotFoundException("AUTHOR_NOT_FOUND", $"ID_{id}");
@@ -49,7 +49,7 @@ namespace Application.Services
 
         public AuthorDto? Update(int id, AuthorDto dto)
         {
-            var author = _authorRepository.GetbyId(id);
+            var author = _authorRepository.GetById(id);
             if (author == null)
             {
                 throw new NotFoundException("AUTHOR_NOT_FOUND", $"ID_{id}");
@@ -64,7 +64,7 @@ namespace Application.Services
 
         public void Delete(int id)
         {
-            var author = _authorRepository.GetbyId(id);
+            var author = _authorRepository.GetById(id);
             if (author == null)
             {
                 throw new NotFoundException("AUTHOR_NOT_FOUND", $"ID_{id}");

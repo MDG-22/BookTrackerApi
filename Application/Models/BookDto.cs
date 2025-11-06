@@ -10,12 +10,19 @@ namespace Application.Models
     public class BookDto
     {
         public int Id { get; set; }
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         public int Pages { get; set; }
-        public string Summary { get; set; }
-        public string? CoverUrl { get; set; }
+        public string Summary { get; set; } = string.Empty;
+        public string CoverUrl { get; set; } = string.Empty;
+        
+        public int AuthorId { get; set; }
+        public string? AuthorName { get; set; }
 
+        // Lista de id de generos
+        public List<int> GenreIds { get; set; } = new List<int>();
 
+        // Lista de nombres de los generos
+        public List<string> Genres { get; set; } = new List<string>();
 
         public static BookDto ToDto(Book book)
         {
@@ -25,7 +32,11 @@ namespace Application.Models
                 Title = book.Title,
                 Pages = book.Pages,
                 Summary = book.Summary,
-                CoverUrl = book.CoverUrl
+                CoverUrl = book.CoverUrl,
+                AuthorId = book.AuthorId,
+                AuthorName = book.Author?.Name,
+                GenreIds = book.Genres.Select(g => g.Id).ToList(),
+                Genres = book.Genres.Select(g => g.GenreName).ToList()
             };
         }
 

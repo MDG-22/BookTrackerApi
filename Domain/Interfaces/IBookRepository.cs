@@ -9,7 +9,12 @@ namespace Domain.Interfaces
 {
     public interface IBookRepository : IRepository<Book>
     {
+        Book GetBookById(int id);
+        IEnumerable<Book> GetAllBooks();
+
         IEnumerable<Book> SearchByTitle(string titleForSearch);
+
+        IEnumerable<Book> GetByGenre(int genreId);
     }
 
 }

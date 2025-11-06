@@ -10,7 +10,7 @@ namespace Domain.Interfaces
     public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
-        T? GetbyId(int id);
+        T? GetById(int id);
         T Create(T entity);
         T? Update(T entity);
         void Delete(int id);

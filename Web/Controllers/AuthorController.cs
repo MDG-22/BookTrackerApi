@@ -25,7 +25,7 @@ namespace Web.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var author = _authorService.GetbyId(id);
+            var author = _authorService.GetById(id);
             return Ok(author);
         }
     }

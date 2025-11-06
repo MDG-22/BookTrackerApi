@@ -25,7 +25,7 @@ namespace Infrastructure.Repositories
             return _dbSet.ToList();
         }
 
-        public T? GetbyId(int id)
+        public T? GetById(int id)
         {
             return _dbSet.Find(id);
         }
@@ -48,7 +48,7 @@ namespace Infrastructure.Repositories
 
         public void Delete(int id)
         {
-            var entity = GetbyId(id);
+            var entity = GetById(id);
 
             if (entity != null)
             {
