@@ -23,6 +23,6 @@ namespace Domain.Entities
         //// Libro
         public int BookId { get; set; }
         public Book? Book { get; set; }
-
+        public string BookTitle { get; set; }
     }
 }
