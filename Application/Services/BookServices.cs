@@ -3,7 +3,7 @@ using Application.Models;
 using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Interfaces;
-using Domain.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,18 +20,13 @@ namespace Application.Services
 
         public IEnumerable<BookDto> GetAllBooks()
         {
-            var books = _bookRepository.GetAll().ToList();
-
-            if (!books.Any())
-                throw new NotFoundException("No books found", "BOOKS_NOT_FOUND");
-
+            var books = _bookRepository.GetAll();
             return books.Select(BookDto.ToDto);
         }
 
         public BookDto GetBookbyId(int id)
         {
             var book = _bookRepository.GetbyId(id);
-
             if (book == null)
                 throw new NotFoundException($"Book with id {id} not found", "BOOK_NOT_FOUND");
 
@@ -83,13 +78,7 @@ namespace Application.Services
 
         public IEnumerable<BookDto> SearchByTitle(string titleForSearch)
         {
-            if (string.IsNullOrWhiteSpace(titleForSearch))
-                throw new AppValidationException("Search title cannot be empty.", "EMPTY_SEARCH");
-
             var books = _bookRepository.SearchByTitle(titleForSearch);
-            if (!books.Any())
-                throw new NotFoundException($"No books found with title '{titleForSearch}'.", "NO_RESULTS");
-
             return books.Select(BookDto.ToDto);
         }
     }

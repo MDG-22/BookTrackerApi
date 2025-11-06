@@ -40,7 +40,7 @@ namespace Web.Controllers
         [Authorize]
         public IActionResult CreateLecture([FromBody] LectureCreateRequest request)
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub);
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
             if (userIdClaim == null) return Unauthorized();
 
             int userId = int.Parse(userIdClaim.Value);
@@ -48,6 +48,7 @@ namespace Web.Controllers
             var lecture = _lectureService.CreateLecture(userId, request);
             return Ok(lecture);
         }
+
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] LectureUpdateRequest dto)
