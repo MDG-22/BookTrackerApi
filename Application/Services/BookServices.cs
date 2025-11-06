@@ -1,24 +1,18 @@
 using Application.Interfaces;
 using Application.Models;
 using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Application.Interfaces;
-using Application.Models;
-using Domain.Entities;
-using Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data.Common;
-using Domain.Exceptions;
 
 namespace Application.Services
 {
     public class BookService : IBookService
     {
         private readonly IBookRepository _bookRepository;
+
         public BookService(IBookRepository bookRepository)
         {
             _bookRepository = bookRepository;
@@ -26,7 +20,11 @@ namespace Application.Services
 
         public IEnumerable<BookDto> GetAllBooks()
         {
-            var books = _bookRepository.GetAll();
+            var books = _bookRepository.GetAll().ToList();
+
+            if (!books.Any())
+                throw new NotFoundException("No books found", "BOOKS_NOT_FOUND");
+
             return books.Select(BookDto.ToDto);
         }
 
@@ -34,14 +32,16 @@ namespace Application.Services
         {
             var book = _bookRepository.GetbyId(id);
             if (book == null)
-            {
-                throw new NotFoundException("BOOK_NOT_FOUND", $"ID_{id}");
-            }
+                throw new NotFoundException($"Book with id {id} not found", "BOOK_NOT_FOUND");
+
             return BookDto.ToDto(book);
         }
 
         public BookDto CreateBook(BookCreateAndUpdateRequest bookRequest)
         {
+            if (string.IsNullOrWhiteSpace(bookRequest.Title))
+                throw new AppValidationException("Book title cannot be empty", "BOOK_TITLE_REQUIRED");
+
             var newBook = new Book
             {
                 Title = bookRequest.Title,
@@ -50,29 +50,33 @@ namespace Application.Services
                 CoverUrl = bookRequest.CoverUrl
             };
 
-            _bookRepository.Create(newBook);
-
-            return BookDto.ToDto(newBook);
+            var created = _bookRepository.Create(newBook);
+            return BookDto.ToDto(created);
         }
 
-        public BookDto UpdateBook(int Id, BookCreateAndUpdateRequest bookDto)
+        public BookDto UpdateBook(int id, BookCreateAndUpdateRequest bookRequest)
         {
-            var book = _bookRepository.GetbyId(Id);
-            if (book != null)
-            {
-                book.Title = bookDto.Title;
-                book.Pages = bookDto.Pages;
-                book.Summary = bookDto.Summary;
-                book.CoverUrl = bookDto.CoverUrl;
+            var book = _bookRepository.GetbyId(id);
+            if (book == null)
+                throw new NotFoundException($"Book with id {id} not found", "BOOK_NOT_FOUND");
 
-                var updated =_bookRepository.Update(book);
-                return BookDto.ToDto(updated);
-            }
-            return null;
+            if (!string.IsNullOrWhiteSpace(bookRequest.Title))
+                book.Title = bookRequest.Title;
+
+            book.Pages = bookRequest.Pages;
+            book.Summary = bookRequest.Summary;
+            book.CoverUrl = bookRequest.CoverUrl;
+
+            var updated = _bookRepository.Update(book);
+            return BookDto.ToDto(updated);
         }
 
         public void DeleteBook(int id)
         {
+            var book = _bookRepository.GetbyId(id);
+            if (book == null)
+                throw new NotFoundException($"Book with id {id} not found", "BOOK_NOT_FOUND");
+
             _bookRepository.Delete(id);
         }
 

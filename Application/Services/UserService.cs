@@ -2,12 +2,11 @@
 using Application.Models;
 using Application.Models.Requests;
 using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
@@ -22,27 +21,38 @@ namespace Application.Services
 
         public IEnumerable<UserDto> GetUsers()
         {
-            var users = _userRepository.GetAll();
+            var users = _userRepository.GetAll().ToList();
+
+            if (!users.Any())
+                throw new NotFoundException("No users found", "USERS_NOT_FOUND");
 
             return users.Select(UserDto.ToDto);
         }
-        public UserDto? GetUserById(int id)
+
+        public UserDto GetUserById(int id)
         {
             var user = _userRepository.GetbyId(id);
+            if (user == null)
+                throw new NotFoundException($"User with id {id} not found", "USER_NOT_FOUND");
 
             return UserDto.ToDto(user);
         }
+
         public UserDto CreateUser(UserCreateRequest dto)
         {
-            var newUser = dto.ToEntity();
+            if (string.IsNullOrWhiteSpace(dto.Username))
+                throw new AppValidationException("Username cannot be empty", "USERNAME_REQUIRED");
 
-            _userRepository.Create(newUser);
-
+            var user = dto.ToEntity();
+            var newUser = _userRepository.Create(user);
             return UserDto.ToDto(newUser);
         }
-        public UserDto? UpdateUser(int id, UserUpdateRequest dto)
+
+        public UserDto UpdateUser(int id, UserUpdateRequest dto)
         {
             var user = _userRepository.GetbyId(id);
+            if (user == null)
+                throw new NotFoundException($"User with id {id} not found", "USER_NOT_FOUND");
 
             if (!string.IsNullOrWhiteSpace(dto.Username))
             {
@@ -51,7 +61,7 @@ namespace Application.Services
 
             if (!string.IsNullOrWhiteSpace(dto.AvatarUrl))
             {
-                user.AvatarUrl= dto.AvatarUrl;
+                user.AvatarUrl = dto.AvatarUrl;
             }
 
             if (!string.IsNullOrWhiteSpace(dto.Description))
@@ -59,12 +69,16 @@ namespace Application.Services
                 user.Description = dto.Description;
             }
 
-             var updatedUser = _userRepository.Update(user);
-
-            return UserDto.ToDto(user);
+            var updatedUser = _userRepository.Update(user);
+            return UserDto.ToDto(updatedUser);
         }
+
         public void DeleteUser(int id)
         {
+            var user = _userRepository.GetbyId(id);
+            if (user == null)
+                throw new NotFoundException($"User with id {id} not found", "USER_NOT_FOUND");
+
             _userRepository.Delete(id);
         }
     }

@@ -22,13 +22,14 @@ namespace Application.Services
 
         public IEnumerable<LectureDto> GetAll()
         {
-            var lectures = _lectureRepository.GetAll();
+            var lectures = _lectureRepository.GetAll().ToList();
 
             if (!lectures.Any())
-                throw new NotFoundException("NO_LECTURES_FOUND");
+                throw new NotFoundException("No lectures found", "LECTURES_NOT_FOUND");
 
             return lectures.Select(LectureDto.ToDto);
         }
+
 
         public LectureDto? GetbyId(int id)
         {
@@ -50,8 +51,8 @@ namespace Application.Services
             lecture.UserId = userId;
             lecture.BookTitle = book.Title;
 
-            _lectureRepository.Create(lecture);
-            return lecture;
+            var newLecture = _lectureRepository.Create(lecture);
+            return newLecture;
         }
 
         public LectureDto? Update(int id, LectureUpdateRequest dto)
@@ -66,12 +67,17 @@ namespace Application.Services
             if (dto.FinishDate.HasValue) lecture.FinishDate = dto.FinishDate.Value;
             lecture.Status = dto.Status;
 
-            _lectureRepository.Update(lecture);
-            return LectureDto.ToDto(lecture);
+            var updated = _lectureRepository.Update(lecture);
+            return LectureDto.ToDto(updated);
         }
 
         public void Delete(int id)
         {
+            var lecture = _lectureRepository.GetbyId(id);
+
+            if (lecture == null)
+                throw new NotFoundException($"LECTURE_{id}_NOT_FOUND");
+
             _lectureRepository.Delete(id);
         }
 
