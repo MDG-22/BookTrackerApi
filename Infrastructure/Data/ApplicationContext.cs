@@ -1,5 +1,6 @@
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Domain.Enums;
 
 namespace Infrastructure.Data
 {
@@ -28,6 +29,11 @@ namespace Infrastructure.Data
                 new Genre { Id = 3, GenreName = "Misterio" },
                 new Genre { Id = 4, GenreName = "No Ficción" },
                 new Genre { Id = 5, GenreName = "Distopía" }
+            );
+
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = 1, Username = "Manu", Email = "manu@gmail.com", Role = UserRole.SuperAdmin, Password ="123456" },
+                new User { Id = 2, Username = "Mati", Email = "mati@gmail.com", Role = UserRole.SuperAdmin, Password ="123456" }
             );
 
             modelBuilder.Entity<User>()

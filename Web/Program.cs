@@ -73,7 +73,7 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddHttpClient<WeatherService>();
 builder.Services.AddScoped<WeatherService>();
 
-builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
+builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(
 builder.Configuration["ConnectionStrings:DBConnectionString"]));
 
 
