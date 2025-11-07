@@ -2,6 +2,7 @@
 using Application.Models;
 using Application.Models.Requests;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Exceptions;
 using Domain.Interfaces;
 using System;
@@ -76,6 +77,29 @@ namespace Application.Services
                 throw new NotFoundException($"User with id {id} not found", "USER_NOT_FOUND");
 
             _userRepository.Delete(id);
+        }
+
+        public IEnumerable<UserAdminDto> GetUsersAdmin()
+        {
+            return _userRepository.GetAll()
+                .Select(u => new UserAdminDto
+                {
+                    Id = u.Id,
+                    Username = u.Username,
+                    Email = u.Email,
+                    Role = u.Role
+                })
+                .ToList();
+        }
+
+        public void UpdateUserRole(int userId, UserRole newRole)
+        {
+            var user = _userRepository.GetById(userId);
+            if (user == null)
+                throw new KeyNotFoundException("User not found");
+
+            user.Role = newRole;
+            _userRepository.Update(user);
         }
     }
 }

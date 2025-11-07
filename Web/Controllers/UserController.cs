@@ -52,11 +52,25 @@ namespace Web.Controllers
             return Ok(updatedUser);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteUser(int id)
         {
             _userService.DeleteUser(id);
 
+            return NoContent();
+        }
+
+        [HttpGet("admin")]
+        public IActionResult GetAllUsers()
+        {
+            var users = _userService.GetUsersAdmin();
+            return Ok(users);
+        }
+
+        [HttpPut("{id}/role")]
+        public IActionResult UpdateUserRole(int id, [FromBody] UserUpdateRoleRequest request)
+        {
+            _userService.UpdateUserRole(id, request.Role);
             return NoContent();
         }
     }

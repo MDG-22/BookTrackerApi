@@ -1,5 +1,6 @@
 ﻿using Application.Models;
 using Application.Models.Requests;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,8 @@ namespace Application.Interfaces
         UserDto CreateUser(UserCreateRequest dto);
         UserDto? UpdateUser(int id, UserUpdateRequest dto);
         void DeleteUser(int id);
+
+        IEnumerable<UserAdminDto> GetUsersAdmin();
+        void UpdateUserRole(int userId, UserRole newRole);
     }
 }
