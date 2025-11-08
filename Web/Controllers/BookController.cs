@@ -37,6 +37,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult CreateBook(BookCreateAndUpdateRequest request)
         {
             var book = _bookService.CreateBook(request);
@@ -44,6 +45,7 @@ namespace Web.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult UpdateBook(int id, BookCreateAndUpdateRequest book)
         {
             _bookService.UpdateBook(id, book);
@@ -52,6 +54,7 @@ namespace Web.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,SuperAdmin")]
         public IActionResult DeleteBook(int id)
         {
             _bookService.DeleteBook(id);

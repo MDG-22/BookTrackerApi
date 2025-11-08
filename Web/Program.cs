@@ -109,7 +109,7 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Book-Tracker API v1");
-    c.RoutePrefix = "swagger"; // <-- aquí lo defines
+    c.RoutePrefix = "swagger";
 });
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
