@@ -77,7 +77,7 @@ builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServe
 builder.Configuration["ConnectionStrings:DBConnectionString"]));
 
 
-var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET")
+var jwtSecret = Environment.GetEnvironmentVariable("Jwt_Secret")
                 ?? builder.Configuration["Jwt:Secret"];
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
