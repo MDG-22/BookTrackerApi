@@ -74,7 +74,7 @@ builder.Services.AddHttpClient<WeatherService>();
 builder.Services.AddScoped<WeatherService>();
 
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(
-builder.Configuration["ConnectionStrings:DBConnectionString"]));
+builder.Configuration["ConnectionStrings:DefaultConnection"]));
 
 
 var jwtSecret = builder.Configuration["Jwt:Secret"];
