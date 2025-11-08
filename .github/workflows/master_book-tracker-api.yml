@@ -23,17 +23,20 @@ jobs:
         with:
           dotnet-version: '8.x'
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      - name: Build Web project
+        run: dotnet build Web/Web.csproj --configuration Release
+      
+      - name: Publish Web project
+        run: dotnet publish Web/Web.csproj --configuration Release -o "${{env.DOTNET_ROOT}}/WebApp"
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ${{env.DOTNET_ROOT}}/WebApp
+
 
   deploy:
     runs-on: windows-latest
@@ -46,10 +49,10 @@ jobs:
           name: .net-app
       
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'book-tracker-api'
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E460B6343AC54AD39F646004D12E2EF4 }}
+

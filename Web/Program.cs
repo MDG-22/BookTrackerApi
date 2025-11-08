@@ -77,7 +77,7 @@ builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServe
 builder.Configuration["ConnectionStrings:DBConnectionString"]));
 
 
-var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET")
+var jwtSecret = Environment.GetEnvironmentVariable("Jwt_Secret")
                 ?? builder.Configuration["Jwt:Secret"];
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -98,6 +98,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 
 var app = builder.Build();
+
+
+#region Apply EF migrations
+using (var serviceScopescope = app.Services.CreateScope())
+{
+    var dbContext = serviceScopescope.ServiceProvider.GetRequiredService<ApplicationContext>();
+    dbContext.Database.Migrate();
+}
+#endregion
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
