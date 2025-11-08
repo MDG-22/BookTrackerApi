@@ -34,13 +34,13 @@ namespace Web.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
-        public IActionResult CreateUser(UserCreateRequest dto)
-        {
-            var newUser = _userService.CreateUser(dto);
+      // [HttpPost]
+      // public IActionResult CreateUser(UserCreateRequest dto)
+      // {
+      //     var newUser = _userService.CreateUser(dto);
 
-            return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser);
-        }
+      //     return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser);
+      // }
 
         [HttpPut("{id}")]
         public IActionResult UpdateUser(int id, UserUpdateRequest dto)
@@ -53,6 +53,7 @@ namespace Web.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "SuperAdmin")]
         public IActionResult DeleteUser(int id)
         {
             _userService.DeleteUser(id);
@@ -61,6 +62,7 @@ namespace Web.Controllers
         }
 
         [HttpGet("admin")]
+        [Authorize(Roles = "SuperAdmin")]
         public IActionResult GetAllUsers()
         {
             var users = _userService.GetUsersAdmin();
@@ -68,6 +70,7 @@ namespace Web.Controllers
         }
 
         [HttpPut("{id}/role")]
+        [Authorize(Roles = "SuperAdmin")]
         public IActionResult UpdateUserRole(int id, [FromBody] UserUpdateRoleRequest request)
         {
             _userService.UpdateUserRole(id, request.Role);

@@ -26,7 +26,7 @@ namespace Application.Models.Requests
                 Username = this.Username,
                 Email = this.Email,
                 Password = this.Password,
-                Role = this.Role,
+                Role = UserRole.Reader,
                 CreatedAt = this.CreatedAt,
                 AvatarUrl = string.Empty,
                 Description = string.Empty
