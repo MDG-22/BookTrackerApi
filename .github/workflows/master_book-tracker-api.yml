@@ -53,5 +53,6 @@ jobs:
         with:
           app-name: 'book-tracker-api'
           slot-name: 'Production'
-          package: ${{env.DOTNET_ROOT}}/WebApp
+          package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E460B6343AC54AD39F646004D12E2EF4 }}
+
