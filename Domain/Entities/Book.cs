@@ -14,9 +14,11 @@ namespace Domain.Entities
         //asigna la base de datos el valor de id
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Title { get; set; }
+
+        public string Title { get; set; } = string.Empty;
+
         public int Pages { get; set; }
-        public string Summary { get; set; }
+        public string Summary { get; set; } = string.Empty;
         public string? CoverUrl { get; set; }
 
         // Autor

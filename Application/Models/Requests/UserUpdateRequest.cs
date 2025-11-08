@@ -11,14 +11,11 @@ namespace Application.Models.Requests
    public class UserUpdateRequest
 {
     [StringLength(80)]
-    public string? Username { get; set; }
+    public string? Username { get; set; } = string.Empty;
 
-    [EmailAddress]
-    [StringLength(120)]
-    public string? Email { get; set; }
+    public string? AvatarUrl { get; set; }
 
-    [StringLength(256)]
-    public string? Password { get; set; }
+    public string? Description { get; set; }
 }
 
 }

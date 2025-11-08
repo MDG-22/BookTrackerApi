@@ -14,6 +14,7 @@ namespace Domain.Entities
         public int Id { get; set; }
         public string? GenreName { get; set; }
 
+
         public List<Book> Books { get; set; } = new List<Book>();
     }
 }

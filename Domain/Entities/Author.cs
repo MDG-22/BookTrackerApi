@@ -12,10 +12,9 @@ namespace Domain.Entities
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
+        [Required]
+        public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
-
-        // lista de libros inicializada vacia
         public List<Book> Books { get; set; } = new List<Book>();
     }
 }
