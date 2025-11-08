@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class AzureMigration6 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -158,6 +158,15 @@ namespace Infrastructure.Migrations
                     { 3, "Misterio" },
                     { 4, "No Ficción" },
                     { 5, "Distopía" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "AvatarUrl", "CreatedAt", "Description", "Email", "Password", "Role", "Username" },
+                values: new object[,]
+                {
+                    { 1, "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "manu@gmail.com", "123456", 2, "Manu" },
+                    { 2, "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "mati@gmail.com", "123456", 2, "Mati" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -73,11 +73,12 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddHttpClient<WeatherService>();
 builder.Services.AddScoped<WeatherService>();
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrEmpty(connectionString))
+    throw new Exception("La cadena de conexión 'DefaultConnection' no está configurada en appsettings.json");
+
 builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        sqlOptions => sqlOptions.EnableRetryOnFailure()
-    ));
+    options.UseSqlServer(connectionString));
 
 
 var jwtSecret = builder.Configuration["Jwt:Secret"];
@@ -103,26 +104,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-
-#region Apply EF migrations
-using (var serviceScopescope = app.Services.CreateScope())
-{
-    var dbContext = serviceScopescope.ServiceProvider.GetRequiredService<ApplicationContext>();
-    dbContext.Database.Migrate();
-}
-#endregion
-
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tu API v1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Book-Tracker API v1");
     c.RoutePrefix = "swagger"; // <-- aquí lo defines
 });
-
-}
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
