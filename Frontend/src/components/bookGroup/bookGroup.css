@@ -1,0 +1,19 @@
+.group-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 3% 18%;
+}
+
+.group-container h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.group-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 25px;
+  width: 100%;
+}

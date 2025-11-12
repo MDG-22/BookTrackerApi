@@ -1,0 +1,38 @@
+.btn-custom-image-url {
+  background-color: #F5F5DC !important;
+  border-color: #AFB1AC !important;
+  color: #252524 !important;
+}
+
+.btn-custom-image-url:hover {
+  transition: 250ms;
+  background-color: #413467 !important;
+  border-color: #413467 !important;
+  color: #F5F5DC !important;
+}
+
+.btn-custom-primary {
+  background-color: #8778B7 !important;
+  border-color: #8778B7 !important;
+  color: #252524 !important;
+}
+
+.btn-custom-primary:hover {
+  transition: 250ms;
+  background-color: #413467 !important;
+  border-color: #413467 !important;
+  color: #F5F5DC !important;
+}
+
+.btn-custom-secondary {
+  background-color: #AAA1CE !important;
+  border-color: #AAA1CE !important;
+  color: #252524 !important;
+}
+
+.btn-custom-secondary:hover {
+  transition: 250ms;
+  background-color: #413467 !important;
+  border-color: #413467 !important;
+  color: #F5F5DC !important;
+}

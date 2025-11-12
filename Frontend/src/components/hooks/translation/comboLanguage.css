@@ -1,0 +1,11 @@
+.combo-language{
+    display: flex;
+    position: relative;
+    width: fit-content;
+    border: solid 1px;
+}
+
+.lang_menu {
+  display: inline-flex;
+  align-items: center;
+}
