@@ -14,7 +14,7 @@ const AuthorDetails = () => {
 
 
   useEffect(() => {
-    fetch(`http://localhost:3000/authors/${id}`)
+    fetch(`https://book-tracker-api.azurewebsites.net/api/Author/${id}`)
       .then(res => {
         if (!res.ok) throw new Error("Error de servidor");
         return res.text(); // TEMPORALMENTE usamos text en lugar de json

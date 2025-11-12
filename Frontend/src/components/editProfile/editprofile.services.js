@@ -2,7 +2,7 @@ const API_URL = import.meta.env.VITE_BASE_SERVER_URL;
 
 const updateUserProfile = async (id, token, updatedUser) => {
   try {
-    const res = await fetch(`${API_URL}/profile/${id}`, {
+    const res = await fetch(`${API_URL}/User/${id}`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,

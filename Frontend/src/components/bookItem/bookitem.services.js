@@ -2,7 +2,7 @@ const API_URL = import.meta.env.VITE_BASE_SERVER_URL
 
 async function updateLecture (token, lectureId, updateData) {
     try {
-        const res = await fetch(`${API_URL}/my-books/${lectureId}`, {
+        const res = await fetch(`${API_URL}/Lecture/${lectureId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ async function updateLecture (token, lectureId, updateData) {
 
 async function deleteLecture (token, lectureId) {
     try {
-        const res = await fetch(`${API_URL}/my-books/${lectureId}`, {
+        const res = await fetch(`${API_URL}/Lecture/${lectureId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,

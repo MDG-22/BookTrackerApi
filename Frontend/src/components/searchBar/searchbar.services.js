@@ -2,7 +2,7 @@ const API_URL = import.meta.env.VITE_BASE_SERVER_URL
 
 const fetchBooks = async () => {
   try {
-    const res = await fetch(`${API_URL}/books`);
+    const res = await fetch(`${API_URL}/Book`);
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }

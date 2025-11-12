@@ -1,13 +1,13 @@
 const API_URL = import.meta.env.VITE_BASE_SERVER_URL;
 
 const fetchBook = async (id) => {
-  const res = await fetch(`${API_URL}/books/${id}`);
+  const res = await fetch(`${API_URL}/Book/${id}`);
   if (!res.ok) throw new Error("Error al obtener el libro");
   return await res.json();
 };
 
 const addLecture = async (token, bookId) => {
-  const res = await fetch(`${API_URL}/my-books`, {
+  const res = await fetch(`${API_URL}/Lecture/${bookId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -25,7 +25,7 @@ const addLecture = async (token, bookId) => {
 };
 
 const fetchLectures = async (token) => {
-  const res = await fetch(`${API_URL}/my-books`, {
+  const res = await fetch(`${API_URL}/Lecture`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -36,7 +36,7 @@ const fetchLectures = async (token) => {
 
 const removeLecture = async (token, lectureId) => {
   try {
-    const res = await fetch(`${API_URL}/my-books/${lectureId}`, {
+    const res = await fetch(`${API_URL}/Lecture/${lectureId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -55,7 +55,7 @@ const removeLecture = async (token, lectureId) => {
 };
 
 const deleteBook = async (token, bookId) => {
-  const res = await fetch(`${API_URL}/books/${bookId}`, {
+  const res = await fetch(`${API_URL}/Book/${bookId}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,

@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_BASE_SERVER_URL
 
 const fetchUsers = async (token) => {
-    return fetch(`${API_URL}/admin-users`, {
+    return fetch(`${API_URL}/User/admin`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }
@@ -14,7 +14,7 @@ const fetchUsers = async (token) => {
 
 async function updateUser(id, token, updateData) {
   try {
-    const response = await fetch(`${API_URL}/admin-users/${id}`, {
+    const response = await fetch(`${API_URL}/User/${id}/role`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ async function updateUser(id, token, updateData) {
 
 async function deleteUser(id, token) {
   try {
-    const response = await fetch(`${API_URL}/admin-users/${id}`, {
+    const response = await fetch(`${API_URL}/User/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`

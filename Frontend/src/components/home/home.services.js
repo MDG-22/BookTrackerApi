@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_BASE_SERVER_URL
 
 export const fetchLectures = async (token) => {
-    return fetch(`${API_URL}/my-books`, {
+    return fetch(`${API_URL}/Lecture`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }
@@ -13,7 +13,7 @@ export const fetchLectures = async (token) => {
 }
 
 export const getBooks = async (token) => {
-    return fetch(`${API_URL}/books`, {
+    return fetch(`${API_URL}/Book`, {
         headers: {
             "Authorization": `Bearer ${token}`
         },
@@ -26,7 +26,7 @@ export const getBooks = async (token) => {
 }
 
 export const getPopularBooks = async () => {
-  const response = await fetch(`${API_URL}/popularbooks`, {
+  const response = await fetch(`${API_URL}/Book`, {
     headers: {
       'Content-Type': 'application/json',
     },

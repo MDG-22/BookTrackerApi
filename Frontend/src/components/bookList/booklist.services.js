@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_BASE_SERVER_URL
 
 const fetchLectures = async (token) => {
-    return fetch(`${API_URL}/my-books`, {
+    return fetch(`${API_URL}/Lecture`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }

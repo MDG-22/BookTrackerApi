@@ -2,7 +2,7 @@ const API_URL = import.meta.env.VITE_BASE_SERVER_URL;
 
 async function updateUser(id, token, updateData) {
   try {
-    const response = await fetch(`${API_URL}/profile-settings/${id}`, {
+    const response = await fetch(`${API_URL}/User/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ async function updateUser(id, token, updateData) {
 
 async function deleteUser(id, token) {
   try {
-    const response = await fetch(`${API_URL}/profile-settings/${id}`, {
+    const response = await fetch(`${API_URL}/User/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`

@@ -1,13 +1,13 @@
 const API_URL = import.meta.env.VITE_BASE_SERVER_URL;
 
 export const fetchBook = async (id) => {
-  const res = await fetch(`${API_URL}/books/${id}`);
+  const res = await fetch(`${API_URL}/Book/${id}`);
   if (!res.ok) throw new Error("Error al obtener el libro");
   return await res.json();
 };
 
 export const updateBook = async (token, id, data) => {
-  const res = await fetch(`${API_URL}/books/${id}`, {
+  const res = await fetch(`${API_URL}/Book/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
