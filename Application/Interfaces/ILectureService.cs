@@ -12,7 +12,7 @@ namespace Application.Interfaces
 {
     public interface ILectureService
     {
-        IEnumerable<LectureDto> GetAll();
+        IEnumerable<LectureDto> GetAll(int userId);
         LectureDto? GetbyId(int id);
         LectureDto CreateLecture(int userId, LectureCreateRequest request);
         LectureDto? Update(int id, LectureUpdateRequest lecture);

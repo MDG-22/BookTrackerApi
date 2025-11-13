@@ -22,10 +22,13 @@ namespace Application.Services
             _bookRepository = bookRepository;
         }
 
-        public IEnumerable<LectureDto> GetAll()
+        public IEnumerable<LectureDto> GetAll(int userId)
         {
-            return _lectureRepository.GetAll().Select(LectureDto.ToDto);
+            return _lectureRepository.GetAll()
+                .Where(l => l.UserId == userId)
+                .Select(LectureDto.ToDto);
         }
+
 
         public LectureDto? GetbyId(int id)
         {

@@ -21,6 +21,7 @@ namespace Infrastructure.Repositories
         {
             return _applicationContext.Lectures
                 .Include(l => l.Book)
+                    .ThenInclude(b => b.Author)
                 .Include(l => l.User)
                 .ToList();
         }
@@ -29,6 +30,7 @@ namespace Infrastructure.Repositories
         {
             return _applicationContext.Lectures
                 .Include(l => l.Book)
+                    .ThenInclude(b => b.Author)
                 .Include(l => l.User)
                 .FirstOrDefault(l => l.Id == id);
         }
@@ -37,6 +39,7 @@ namespace Infrastructure.Repositories
         {
             var lectures = _applicationContext.Lectures
                 .Include(l => l.Book)
+                    .ThenInclude(b => b.Author)
                 .Include(l => l.User)
                 .Where(l => l.UserId == userId);
 
