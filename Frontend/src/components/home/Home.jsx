@@ -65,7 +65,7 @@ const Home = () => {
 
       const lectureReadBookIds = lectures
         // Filtra solo las lecturas 'Leído'
-        .filter(lecture => lecture.status === 'Leyendo')
+        .filter(lecture => lecture.status === 1)
         // Luego, mapea para obtener sus bookId
         .map(lecture => lecture.bookId);
 
