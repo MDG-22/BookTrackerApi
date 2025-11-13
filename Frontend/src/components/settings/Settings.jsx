@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { AuthenticationContext } from '../services/auth.context';
+import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import { successToast, errorToast } from '../notifications/notifications.js';
 import { updateUser, deleteUser } from './settings.services.js';
 import { useNavigate } from 'react-router-dom';

@@ -2,37 +2,31 @@ import ModalLogout from '../modalLogout/ModalLogout';
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState, useContext } from 'react';
-import { AuthenticationContext } from '../services/auth.context';
+import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import { useTranslate } from '../hooks/translation/UseTranslate';
 import './userMenu.css';
 import navbarImage from './avatarNavbar.png';
 
 const UserMenu = () => {
-
   const navigate = useNavigate();
   const translate = useTranslate();
   const [showModal, setShowModal] = useState(false);
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
 
-  const { token, username, id, profilePictureUrl } = useContext(AuthenticationContext);
+  const context = useContext(AuthenticationContext);
+  if (!context) return null; 
 
-  const handleClickProfile = () => {
-    navigate(`/profile/${id}`)
-  }
+  const { token, username, id, profilePictureUrl } = context;
 
-  const hanldeClickSettings = () => {
-    navigate('/profile-settings')
-  }
-
-  const handleClickLogin = () => {
-    navigate('/login')
-  }
+  const handleClickProfile = () => navigate(`/profile/${id}`);
+  const handleClickSettings = () => navigate('/profile-settings');
+  const handleClickLogin = () => navigate('/login');
 
   return (
     <div className="user-menu">
-      <Dropdown className="user" align="end" >
-        <DropdownToggle as="span" className='user-toggle no-caret' >
+      <Dropdown className="user" align="end">
+        <DropdownToggle as="span" className='user-toggle no-caret'>
           {profilePictureUrl ? (
             <img
               src={profilePictureUrl}
@@ -49,32 +43,29 @@ const UserMenu = () => {
         </DropdownToggle>
 
         <DropdownMenu>
-          {token ?
+          {token ? (
             <>
-              <DropdownItem onClick={handleClickProfile} >
+              <DropdownItem onClick={handleClickProfile}>
                 {translate("profile")}
               </DropdownItem>
-              <DropdownItem onClick={hanldeClickSettings} >
+              <DropdownItem onClick={handleClickSettings}>
                 {translate("settings")}
               </DropdownItem>
-              <DropdownItem onClick={openModal} >
+              <DropdownItem onClick={openModal}>
                 {translate("logout")}
               </DropdownItem>
             </>
-            :
-            <DropdownItem onClick={handleClickLogin} >
+          ) : (
+            <DropdownItem onClick={handleClickLogin}>
               {translate("login")}
             </DropdownItem>
-          }
+          )}
         </DropdownMenu>
       </Dropdown>
 
-      <ModalLogout
-        show={showModal}
-        handleClose={closeModal}
-      />
+      <ModalLogout show={showModal} handleClose={closeModal} />
     </div>
-  )
-}
+  );
+};
 
-export default UserMenu
+export default UserMenu;

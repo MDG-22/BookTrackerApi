@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { AuthenticationContext } from '../services/auth.context'
+import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import { errorToast } from '../notifications/notifications';
 import { useTranslate } from '../hooks/translation/UseTranslate'
 import StaticsCard from '../staticsCard/StaticsCard';

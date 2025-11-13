@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Modal, Button, ModalHeader, ModalBody, ModalFooter, FormSelect } from 'react-bootstrap';
 import { useTranslate } from '../hooks/translation/UseTranslate';
-import { AuthenticationContext } from '../services/auth.context';
+import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import './adminModal.css';
 
 

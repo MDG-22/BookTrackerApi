@@ -4,7 +4,7 @@ import BookItem from '../bookItem/BookItem';
 import { StarFill } from 'react-bootstrap-icons';
 import fetchLectures from './booklist.services.js';
 import { useTranslate } from '../hooks/translation/UseTranslate';
-import { AuthenticationContext } from '../services/auth.context.jsx';
+import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import './bookList.css';
 
 const BookList = () => {

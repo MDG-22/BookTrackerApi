@@ -1,19 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AuthenticationContext } from "../services/auth.context";
+import { AuthenticationContext } from "../services/auth/AuthContextProvider.jsx";
 import { fetchUsers, updateUser, deleteUser } from "./adminUsers.services.js";
 import { useNavigate } from "react-router-dom";
 import { useTranslate } from "../hooks/translation/UseTranslate";
 import { errorToast, infoToast, successToast } from "../notifications/notifications.js";
-import { Trash3Fill, CheckLg, XLg, PencilSquare } from 'react-bootstrap-icons';
+import { Trash3Fill, CheckLg, XLg, PencilSquare } from "react-bootstrap-icons";
 import AdminDeleteModal from "../adminDeleteModal/AdminDeleteModal.jsx";
 import { Button, FormSelect, Card, CardHeader } from "react-bootstrap";
 import "./adminUsers.css";
 
 const AdminUsers = () => {
-  const { token, role, id, updateRole } = useContext(AuthenticationContext);
+  const context = useContext(AuthenticationContext);
+  if (!context) return null;
 
-  const loggedId = id;
-
+  const { token, role, id: loggedId, updateRole } = context;
   const translate = useTranslate();
   const navigate = useNavigate();
 
@@ -29,13 +29,7 @@ const AdminUsers = () => {
     setNewRole(user.role);
   };
 
-  const handleNewRole = (event) => {
-    setNewRole(event.target.value);
-  };
-
-  const isNotMod = () => {
-    errorToast(translate("not_mod"));
-  };
+  const handleNewRole = (event) => setNewRole(Number(event.target.value));
 
   const handleOpenDeleteModal = (user) => {
     setSelectedUser(user);
@@ -49,36 +43,21 @@ const AdminUsers = () => {
   };
 
   const handleUpdate = (updatedUser) => {
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user.id === updatedUser.id ? updatedUser : user
-      )
-    );
+    setUsers((prev) => prev.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
   };
 
-  const handleDelete = (deletedId) => {
-    setUsers((prevUsers) =>
-      prevUsers.filter((user) => user.id !== deletedId)
-    );
-  };
+  const handleDelete = (deletedId) => setUsers((prev) => prev.filter((u) => u.id !== deletedId));
 
   const handleUpdateUser = async (id) => {
     try {
-      const updatedData = {};
-      if (newRole) {
-        updatedData.role = newRole;
-      
-        if (id === loggedId){
-          updateRole(newRole);
-        }
-      }
+      const updatedData = { role: newRole };
+      if (id === loggedId) updateRole(newRole);
 
       const updatedUser = await updateUser(id, token, updatedData);
       handleUpdate(updatedUser);
       successToast("Usuario actualizado correctamente");
       setIsEditing(false);
       setSelectedUser(null);
-
     } catch (error) {
       console.error("Error al actualizar", error);
       errorToast("Error al actualizar");
@@ -96,27 +75,8 @@ const AdminUsers = () => {
     }
   };
 
-  const handleClickSave = () => {
-    if (selectedUser) {
-      handleUpdateUser(selectedUser.id);
-    }
-  };
-
-  const handleClickCancel = () => {
-    setIsEditing(false);
-    setSelectedUser(null);
-  };
-
-  const handleClickEditUser = (user) => () => (
-    handleEdit(user)
-  );
-
-  const handleClickDeleteUser = (user) => () => (
-    handleOpenDeleteModal(user)
-  );
-
   useEffect(() => {
-    if (role !== "mod") {
+    if (role !== 2) {
       navigate("/");
       return;
     }
@@ -134,74 +94,70 @@ const AdminUsers = () => {
     loadUsers();
   }, [role, token]);
 
-  if (role === "mod") {
-    return (
-      <div className="admin-page">
-        <div className="admin-container">
-          <Card className="admin-grid">
-            <CardHeader className="admin-titles id-col">ID</CardHeader>
-            <CardHeader className="admin-titles">{translate("username")}</CardHeader>
-            <CardHeader className="admin-titles">{translate("email")}</CardHeader>
-            <CardHeader className="admin-titles">{translate("role")}</CardHeader>
-            <CardHeader className="admin-titles blank-col"></CardHeader>
-            <CardHeader className="admin-titles blank-col"></CardHeader>
+  return (
+    <div className="admin-page">
+      <div className="admin-container">
+        <Card className="admin-grid">
+          <CardHeader className="admin-titles id-col">ID</CardHeader>
+          <CardHeader className="admin-titles">{translate("username")}</CardHeader>
+          <CardHeader className="admin-titles">{translate("email")}</CardHeader>
+          <CardHeader className="admin-titles">{translate("role")}</CardHeader>
+          <CardHeader className="admin-titles blank-col"></CardHeader>
+          <CardHeader className="admin-titles blank-col"></CardHeader>
 
-            {users.map((user) => (
-              <React.Fragment key={user.id}>
-                <div className="admin-items id-col">{user.id}</div>
-                <div className="admin-items">{user.username}</div>
-                <div className="admin-items">{user.email}</div>
+          {users.map((user) => (
+            <React.Fragment key={user.id}>
+              <div className="admin-items id-col">{user.id}</div>
+              <div className="admin-items">{user.username}</div>
+              <div className="admin-items">{user.email}</div>
 
+              {isEditing && selectedUser?.id === user.id ? (
+                <FormSelect value={newRole} onChange={handleNewRole}>
+                  <option value={0}>{translate("reader")}</option>
+                  <option value={1}>{translate("admin")}</option>
+                  <option value={2}>{translate("mod")}</option>
+                </FormSelect>
+              ) : (
+                <div className="admin-items">{translate(["reader","admin","mod"][user.role])}</div>
+              )}
+
+              <div className="admin-items blank-col">
                 {isEditing && selectedUser?.id === user.id ? (
-                  <FormSelect className="edit-select" value={newRole} onChange={handleNewRole}>
-                    <option value="reader">{translate("reader")}</option>
-                    <option value="admin">{translate("admin")}</option>
-                    <option value="mod">{translate("mod")}</option>
-                  </FormSelect>
-                ) : (
-                  <div className="admin-items">{translate(user.role)}</div>
-                )}
-
-                <div className="admin-items blank-col">
-                  {isEditing && selectedUser?.id === user.id ? (
-                    <>
-                      <Button variant="success" className="admin-btn save-btn" onClick={handleClickSave}>
-                        <CheckLg size={20} className="clickable delete-user-btn" />
-                      </Button>
-                      <Button variant="secondary" className="admin-btn" onClick={handleClickCancel}>
-                        <XLg size={20} className="clickable delete-user-btn" />
-                      </Button>
-                    </>
-                  ) : (
-                    <Button variant="secondary" className="admin-btn" onClick={handleClickEditUser(user)}>
-                      <PencilSquare size={20} className="clickable delete-user-btn" />
+                  <>
+                    <Button variant="success" onClick={() => handleUpdateUser(user.id)}>
+                      <CheckLg size={20} />
                     </Button>
-                  )}
-                </div>
-
-                <div className="admin-items blank-col">
-                  <Button variant="danger" className="admin-btn" onClick={handleClickDeleteUser(user)}>
-                    <Trash3Fill size={20} className="clickable delete-user-btn" />
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                      <XLg size={20} />
+                    </Button>
+                  </>
+                ) : (
+                  <Button variant="secondary" onClick={() => handleEdit(user)}>
+                    <PencilSquare size={20} />
                   </Button>
-                </div>
-              </React.Fragment>
-            ))}
-          </Card>
-        </div>
+                )}
+              </div>
 
-        {showDeleteModal && (
-          <AdminDeleteModal
-            user={selectedUser}
-            showDeleteModal={showDeleteModal}
-            closeModal={handleCloseModal}
-            deleteUser={handleDeleteUser}
-          />
-        )}
+              <div className="admin-items blank-col">
+                <Button variant="danger" onClick={() => handleOpenDeleteModal(user)}>
+                  <Trash3Fill size={20} />
+                </Button>
+              </div>
+            </React.Fragment>
+          ))}
+        </Card>
       </div>
-    );
-  }
 
-  return null;
+      {showDeleteModal && (
+        <AdminDeleteModal
+          user={selectedUser}
+          showDeleteModal={showDeleteModal}
+          closeModal={handleCloseModal}
+          deleteUser={handleDeleteUser}
+        />
+      )}
+    </div>
+  );
 };
 
 export default AdminUsers;

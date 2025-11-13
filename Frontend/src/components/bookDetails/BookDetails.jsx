@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { fetchBook, addLecture, fetchLectures, removeLecture, deleteBook } from "./bookdetails.services.js";
 import { Button, Modal } from "react-bootstrap";
 import { errorToast, infoToast, successToast } from "../notifications/notifications.js";
-import { AuthenticationContext } from "../services/auth.context.jsx";
+import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import "./bookDetails.css";
 import { useTranslate } from "../hooks/translation/UseTranslate.jsx";
 

@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import BookGroup from '../bookGroup/BookGroup';
 import CardBook from '../cardBook/CardBook';
 import { fetchLectures, getBooks, getPopularBooks } from './home.services';
-import { AuthenticationContext } from '../services/auth.context';
+import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import { useTranslate } from "../hooks/translation/UseTranslate.jsx";
 import { useNavigate } from "react-router-dom";
 

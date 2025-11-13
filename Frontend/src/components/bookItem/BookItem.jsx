@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Trash3, CheckLg, XLg, PencilSquare } from 'react-bootstrap-icons';
 import { updateLecture, deleteLecture } from './bookitem.services.js';
 import { useTranslate } from '../hooks/translation/UseTranslate';
-import { AuthenticationContext } from '../services/auth.context.jsx';
+import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import './bookItem.css';
 
 const BookItem = ({ lecture, onUpdate, onDelete }) => {

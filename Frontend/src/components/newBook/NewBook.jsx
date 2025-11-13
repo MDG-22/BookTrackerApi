@@ -4,7 +4,7 @@ import { fetchGenres, fetchAuthors, newBook } from './newbook.services.js';
 import { successToast, errorToast } from '../notifications/notifications.js';
 import { useTranslate } from '../hooks/translation/UseTranslate.jsx';
 import { useNavigate } from 'react-router';
-import { AuthenticationContext } from '../services/auth.context.jsx';
+import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import fetchUserLogged from '../profile/profile.services.js';
 import notFound from './image-not-found.jpg';
 import './newBook.css';

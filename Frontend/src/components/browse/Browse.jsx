@@ -74,11 +74,11 @@ const Browse = () => {
             {genres.map((genre) => (
               <div
                 key={genre.id}
-                className={`genre-filter clickable ${genreFilter === genre.name ? "active" : ""
+                className={`genre-filter clickable ${genreFilter === genre.genreName ? "active" : ""
                   }`}
-                onClick={handleFilter(genre.name)}
+                onClick={handleFilter(genre.genreName)}
               >
-                {translate(genre.name)}
+                {translate(genre.genreName)}
               </div>
             ))}
 
