@@ -1,0 +1,38 @@
+.login-image {
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    width: 50vw;
+    height: 90vh;
+    background-image: url('./login.jpg');
+    background-size: cover;
+    background-position: left bottom;
+    right: 0px;
+    padding: 2%;
+}
+
+.login-image-text h3 {
+  font-family: 'Montserrat', sans-serif; 
+  color: #F8F8F8; 
+  font-size: 2.8em; 
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4); 
+  letter-spacing: 1.5px; 
+  margin-bottom: 15px; 
+}
+
+.login-image-text p {
+  font-family: 'Open Sans', sans-serif; 
+  color: #E0E0E0; 
+  font-size: 1.3em; 
+  line-height: 1.6; 
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); 
+}
+
+/* Efecto hover texto */
+.login-image-text {
+  transition: transform 0.3s ease-in-out;
+}
+
+.login-image-text:hover {
+  transform: translateY(-5px);
+}

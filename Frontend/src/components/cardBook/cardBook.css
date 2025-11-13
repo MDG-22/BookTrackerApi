@@ -1,0 +1,33 @@
+.book-item-main{
+    height: 200px;
+    border-radius: 8ex;
+}
+
+.book-item img{
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.book-item{
+    padding: 6% !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.book-item-title{
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 1ex;
+}
+
+.book-item-author{
+    font-size: 0.8rem;
+    margin-top: 1ex;
+    margin-bottom: 1em;
+}
+
+.book-item-pages{
+    font-size: 0.7rem;
+    margin-top: auto;
+}

@@ -1,0 +1,87 @@
+.details-page {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding: 1rem 0;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+}
+
+.book-cover-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  background-color: white;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.book-cover {
+  height: 300px;
+  width: auto;
+  max-width: 250px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.book-body-container {
+  width: 60%;
+  padding: 1rem 3rem;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background-color: white;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.book-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.book-title {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.book-author {
+  font-size: 1.3rem;
+  font-weight: 300;
+  font-style: italic;
+  color: #555;
+  cursor: pointer;
+}
+
+.book-summary {
+  padding: 1rem 0;
+  line-height: 1.5;
+}
+
+.book-pages {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.book-genres {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  color: #333;
+}
+
+.book-details-status {
+  font-style: italic;
+  color: #999;
+  margin-top: 0.5rem;
+}
+
+.addLecture-btn,
+.removeLecture-btn,
+.editBook-btn,
+.deleteBook-btn {
+  margin-top: 1rem;
+  width: fit-content;
+}
+
+.editBook-btn {
+  margin-right: 1rem;
+}

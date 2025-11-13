@@ -1,0 +1,24 @@
+
+.edit-title{
+    font-size: 1.4rem;
+}
+
+.actual-role{
+    font-size: 1.1rem;
+}
+
+.edit-input{
+    width: min-content;
+    font-size: 0.9rem;
+    padding: 1ex 1.5ex;
+    border: solid 1px;
+}
+
+.edit-select, .edit-input{
+    margin: 0.75ex 0 2em;
+}
+
+.delete-btn{
+    display: flex;
+    justify-content: center;
+}
