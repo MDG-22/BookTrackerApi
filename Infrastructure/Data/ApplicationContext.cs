@@ -491,7 +491,7 @@ namespace Infrastructure.Data
                 .HasOne(l => l.Book)
                 .WithMany()
                 .HasForeignKey(l => l.BookId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Book>()
                 .HasOne(b => b.Author)
