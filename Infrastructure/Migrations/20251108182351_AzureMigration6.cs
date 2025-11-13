@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -13,6 +13,8 @@ namespace Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            // *** COMENTADO: estas tablas ya existen en la base (Authors) ***
+            /*
             migrationBuilder.CreateTable(
                 name: "Authors",
                 columns: table => new
@@ -26,7 +28,10 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Authors", x => x.Id);
                 });
+            */
 
+            // *** COMENTADO: Genres ya existe en la base ***
+            /*
             migrationBuilder.CreateTable(
                 name: "Genres",
                 columns: table => new
@@ -39,7 +44,10 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Genres", x => x.Id);
                 });
+            */
 
+            // *** COMENTADO: Users ya existe en la base ***
+            /*
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
@@ -58,7 +66,10 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
+            */
 
+            // *** COMENTADO: Books ya existe en la base ***
+            /*
             migrationBuilder.CreateTable(
                 name: "Books",
                 columns: table => new
@@ -81,7 +92,10 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+            */
 
+            // *** COMENTADO: BookGenre ya existe en la base ***
+            /*
             migrationBuilder.CreateTable(
                 name: "BookGenre",
                 columns: table => new
@@ -105,7 +119,10 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+            */
 
+            // *** COMENTADO: Lectures ya existe en la base ***
+            /*
             migrationBuilder.CreateTable(
                 name: "Lectures",
                 columns: table => new
@@ -137,7 +154,10 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+            */
 
+            // *** COMENTADO: seeding de Authors para evitar PK duplicadas ***
+            /*
             migrationBuilder.InsertData(
                 table: "Authors",
                 columns: new[] { "Id", "Description", "Name" },
@@ -147,7 +167,10 @@ namespace Infrastructure.Migrations
                     { 2, "Reina del misterio", "Agatha Christie" },
                     { 3, "Autor de distopías y ensayo político", "George Orwell" }
                 });
+            */
 
+            // *** COMENTADO: seeding de Genres (por si ya tenés estos IDs) ***
+            /*
             migrationBuilder.InsertData(
                 table: "Genres",
                 columns: new[] { "Id", "GenreName" },
@@ -159,7 +182,10 @@ namespace Infrastructure.Migrations
                     { 4, "No Ficción" },
                     { 5, "Distopía" }
                 });
+            */
 
+            // *** COMENTADO: seeding de Users (por si ya tenés usuarios con esos Id) ***
+            /*
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AvatarUrl", "CreatedAt", "Description", "Email", "Password", "Role", "Username" },
@@ -168,8 +194,10 @@ namespace Infrastructure.Migrations
                     { 1, "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "manu@gmail.com", "123456", 2, "Manu" },
                     { 2, "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "mati@gmail.com", "123456", 2, "Mati" }
                 });
+            */
 
-            migrationBuilder.CreateIndex(
+            // ⚠ Estos CreateIndex pueden fallar si el índice ya existe, pero probamos primero.
+           /* migrationBuilder.CreateIndex(
                 name: "IX_BookGenre_GenreId",
                 table: "BookGenre",
                 column: "GenreId");
@@ -193,6 +221,9 @@ namespace Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            // Comentamos los DropTable para no borrar tablas de un esquema ya existente
+
+            /*
             migrationBuilder.DropTable(
                 name: "BookGenre");
 
@@ -210,6 +241,8 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Authors");
+            
         }
     }
 }
+*/
