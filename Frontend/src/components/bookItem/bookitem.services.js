@@ -39,7 +39,6 @@ async function deleteLecture(token, lectureId) {
   }
 }
 
-// ✅ Nueva función para obtener un book por id
 async function fetchBook(bookId) {
   try {
     const res = await fetch(`${API_URL}/Book/${bookId}`);

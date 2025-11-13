@@ -32,7 +32,7 @@ const BookList = () => {
     )
   }
 
-  const filteredLectures = statusFilter
+  const filteredLectures = statusFilter !== null
     ? lectures.filter(lecture => lecture.status === statusFilter)
     : lectures;
 
@@ -56,15 +56,27 @@ const BookList = () => {
               <CardHeader>
                 {translate("filter")}:
               </CardHeader>
-              <ListGroupItem className={`status-filter clickable ${statusFilter === "Para leer" ? "active" : ""}`} onClick={handleFilter("Para leer")} >
-                {translate("Para leer")}
-              </ListGroupItem>
-              <ListGroupItem className={`status-filter clickable ${statusFilter === "Leyendo" ? "active" : ""}`} onClick={handleFilter("Leyendo")} >
-                {translate("Leyendo")}
-              </ListGroupItem>
-              <ListGroupItem className={`status-filter clickable ${statusFilter === "Leído" ? "active" : ""}`} onClick={handleFilter("Leído")} >
-                {translate("Leído")}
-              </ListGroupItem>
+                <ListGroupItem
+                  className={`status-filter clickable ${statusFilter === 0 ? "active" : ""}`}
+                  onClick={handleFilter(0)}
+                >
+                  {translate("Para leer")}
+                </ListGroupItem>
+
+                <ListGroupItem
+                  className={`status-filter clickable ${statusFilter === 1 ? "active" : ""}`}
+                  onClick={handleFilter(1)}
+                >
+                  {translate("Leyendo")}
+                </ListGroupItem>
+
+                <ListGroupItem
+                  className={`status-filter clickable ${statusFilter === 2 ? "active" : ""}`}
+                  onClick={handleFilter(2)}
+                >
+                  {translate("Leído")}
+                </ListGroupItem>
+
               {statusFilter !== null &&
                 <>
                   <ListGroupItem className='clear-filter clickable' onClick={handleFilter(null)} >

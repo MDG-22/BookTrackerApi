@@ -48,7 +48,7 @@ export const calculateStats = (dataStats, setStats) => {
     let ratedReadingsCount = 0;
 
     dataStats.forEach(reading => {
-        if (reading.status === 'Leído') {
+        if (reading.status === 2) {
             booksReadCount++;
         }
 
