@@ -1,8 +1,8 @@
 import './index.css'
 import { useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'; // Importa ToastContainer
-import 'react-toastify/dist/ReactToastify.css'; // Importa los estilos CSS
+import { ToastContainer } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 import MainLayout from './components/mainLayout/MainLayout'
 import BookList from './components/bookList/BookList'
 import BookDetails from './components/bookDetails/BookDetails'
