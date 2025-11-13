@@ -6,18 +6,19 @@ async function updateUser(id, token, updateData) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(updateData)
+      body: JSON.stringify(updateData),
     });
 
+    const text = await response.text();
+    const data = text ? JSON.parse(text) : null;
+
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Error actualizando el usuario');
+      throw new Error(data?.message || 'Error actualizando el usuario');
     }
 
-    const updatedUser = await response.json();
-    return updatedUser;
+    return data;
   } catch (error) {
     console.error('updateUser error:', error);
     throw error;
@@ -28,14 +29,13 @@ async function deleteUser(id, token) {
   try {
     const response = await fetch(`${API_URL}/User/${id}`, {
       method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Error eliminando la cuenta');
+      const text = await response.text();
+      const data = text ? JSON.parse(text) : null;
+      throw new Error(data?.message || 'Error eliminando la cuenta');
     }
 
     return true;

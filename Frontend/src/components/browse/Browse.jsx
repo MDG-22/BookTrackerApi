@@ -18,10 +18,12 @@ const Browse = () => {
   const handleFilter = (genre) => () => setGenreFilter(genre);
 
   const filteredBooks = genreFilter
-    ? books.filter((book) =>
-      book.genres?.some((genre) => genre.name === genreFilter)
+  ? books.filter((book) =>
+      book.genres?.some((genre) => genre === genreFilter)
     )
-    : books;
+  : books;
+
+
 
   const handleClick = (id) => () => {
     navigate(`/books/${id}`, { replace: true });

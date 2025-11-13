@@ -7,7 +7,7 @@ const CardBook = ({ book, handleClick, handleAuthor, translate }) => {
             <CardBody className="book-item">
                 {/* IMAGEN */}
                 <img
-                    src={book.imageUrl}
+                    src={book.coverUrl}
                     className="clickable"
                     onClick={handleClick(book.id)}
                 />
@@ -23,10 +23,11 @@ const CardBook = ({ book, handleClick, handleAuthor, translate }) => {
                 {/* AUTOR */}
                 <span
                     className="book-item-author clickable"
-                    onClick={handleAuthor(book.authorId)}
-                >
-                    {translate(book.author?.authorName)}
+                    onClick={handleAuthor(book?.authorId)}
+                    >
+                    {translate(book.authorName)}
                 </span>
+
 
                 {/* PAGINAS */}
                 <span className="book-item-pages">

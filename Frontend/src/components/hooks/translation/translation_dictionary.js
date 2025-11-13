@@ -109,6 +109,8 @@ export const translation_dictionary = {
         { key: "login_img_title", value: "Tus libros a un click" },
         { key: "login_img_text1", value: "Accede a tu biblioteca y gestiona tus" },
         { key: "login_img_text2", value: "lecturas" },
+        { key: "update_success", value: "Datos actualizados con éxito" },
+        { key: "update_error", value: "Error al actualizar el usuario" },
     ],
     en: [
         { key: "spanish_lang", value: "Spanish" },
@@ -212,6 +214,8 @@ export const translation_dictionary = {
         { key: "cancel", value: "Cancel"},
         { key: "account_settings", value: "Account Settings" },
         { key: "search_placeholder", value: "Search..." },
+        { key: "update_success", value: "User data updated successfully" },
+        { key: "update_error", value: "Error updating user" },
 
 
         // GENRES

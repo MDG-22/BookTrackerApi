@@ -12,7 +12,7 @@ const SearchBar = () => {
   const navigate = useNavigate();
   const translate = useTranslate();
 
-  // Normalizacion UNICODE
+  // Normalización UNICODE
   const normalizeText = (text) =>
     text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
@@ -38,7 +38,7 @@ const SearchBar = () => {
     if (term.length > 0) {
       const found = books.filter(book => {
         const byTitle = normalizeText(book.title).includes(normalizedTerm);
-        const byAuthor = normalizeText(book.author?.authorName).includes(normalizedTerm);
+        const byAuthor = normalizeText(book.authorName || "").includes(normalizedTerm);
         return byTitle || byAuthor;
       });
 
@@ -50,13 +50,9 @@ const SearchBar = () => {
 
   const handleClick = (id) => () => {
     navigate(`/books/${id}`);
-
-    // Limpio la barra de búsqueda
     setSearchTerm("");
-
-    // Escondo la lista de resultados limpiándola
     setFilteredBooks([]);
-  }
+  };
 
   return (
     <div className="search-wrapper">
@@ -73,13 +69,13 @@ const SearchBar = () => {
           {filteredBooks.map((book) => (
             <li key={book.id} className="suggestion-item" onClick={handleClick(book.id)}>
               <img
-                src={book.imageUrl}
+                src={book.coverUrl || "/default-cover.jpg"}
                 alt={book.title}
                 className="suggestion-cover"
               />
               <div className="suggestion-text">
                 <div className="suggestion-title">{translate(book.title)}</div>
-                <div className="suggestion-author">{book.author.authorName}</div>
+                <div className="suggestion-author">{book.authorName}</div>
               </div>
             </li>
           ))}

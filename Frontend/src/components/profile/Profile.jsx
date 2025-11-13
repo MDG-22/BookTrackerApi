@@ -1,15 +1,14 @@
 import { useState, useEffect, useContext } from 'react';
 import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import { errorToast } from '../notifications/notifications';
-import { useTranslate } from '../hooks/translation/UseTranslate'
+import { useTranslate } from '../hooks/translation/UseTranslate';
 import StaticsCard from '../staticsCard/StaticsCard';
 import EditProfile from '../editProfile/EditProfile';
 import fetchUserProfile, { calculateStats, fetchStatsProfile } from './profile.services.js';
-import profileImageDefault from './profileImageDefault.png'
+import profileImageDefault from './profileImageDefault.png';
 import './Profile.css';
 
 const Profile = () => {
-
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [stats, setStats] = useState({
@@ -19,16 +18,10 @@ const Profile = () => {
   });
 
   const translate = useTranslate();
-
   const { id, token } = useContext(AuthenticationContext);
 
-  const openEditModal = () => {
-    setIsEditModalOpen(true);
-  };
-
-  const closeEditModal = () => {
-    setIsEditModalOpen(false);
-  };
+  const openEditModal = () => setIsEditModalOpen(true);
+  const closeEditModal = () => setIsEditModalOpen(false);
 
   const handleUserUpdated = (updatedUser) => {
     setUser(updatedUser);
@@ -39,8 +32,8 @@ const Profile = () => {
       try {
         const data = await fetchUserProfile(id, token);
         setUser(data);
+
         const dataStats = await fetchStatsProfile(token);
-        console.log(dataStats);
         calculateStats(dataStats, setStats);
       } catch (error) {
         console.error("Error al cargar perfil: ", error);
@@ -48,34 +41,30 @@ const Profile = () => {
       }
     };
 
-    if (id && token) {
-      getProfile();
-    }
-
-  }, [id, token])
-
-
+    if (id && token) getProfile();
+  }, [id, token]);
 
   if (!user) {
     return <p>Cargando perfil...</p>;
   }
 
+  const formattedDate = new Date(user.createdAt).toLocaleDateString('es-AR', {
+    year: 'numeric',
+    month: 'long'
+  });
+
   return (
     <div className="profile-body">
       <div className="profile-main">
-
         <div className="profile">
-          {user.profilePictureUrl ? (
-            <img src={user.profilePictureUrl} alt="Foto de perfil" />
-          ) : (
-            <img
-              src={profileImageDefault}
-              alt="Foto de perfil"
-            />
-          )}
+          <img
+            src={user.avatarUrl || profileImageDefault}
+            alt="Foto de perfil"
+            className="profile-picture"
+          />
           <div className="profile-info">
             <h1>{user.username}</h1>
-            <p>{translate("member_since")}: {user.memberSince}</p>
+            <p>{translate("member_since")}: {formattedDate}</p>
             <a href="#" onClick={openEditModal}>Editar perfil</a>
           </div>
         </div>
