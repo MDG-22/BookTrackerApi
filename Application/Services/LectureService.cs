@@ -42,13 +42,26 @@ namespace Application.Services
             if (book == null)
                 throw new NotFoundException($"Book with id {request.BookId} not found", "BOOK_NOT_FOUND");
 
+            var existingLecture = _lectureRepository
+                .GetAll()
+                .FirstOrDefault(l => l.UserId == userId && l.BookId == request.BookId);
+
+            if (existingLecture != null)
+                throw new AppValidationException(
+                    "You already have a lecture for this book.",
+                    "LECTURE_ALREADY_EXISTS"
+                );
+
             var lecture = request.ToEntity();
             lecture.UserId = userId;
-            lecture.BookTitle = book.Title;
+            lecture.BookId = book.Id;
+            lecture.Book = book;
 
             _lectureRepository.Create(lecture);
             return LectureDto.ToDto(lecture);
         }
+
+
 
         public LectureDto? Update(int id, LectureUpdateRequest dto)
         {

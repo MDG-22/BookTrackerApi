@@ -20,17 +20,17 @@ namespace Infrastructure.Repositories
             _dbSet = context.Set<T>();
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return _dbSet.ToList();
         }
 
-        public T? GetById(int id)
+        public virtual T? GetById(int id)
         {
             return _dbSet.Find(id);
         }
 
-        public T Create(T entity)
+        public virtual T Create(T entity)
         {
             _dbSet.Add(entity);
             _applicationContext.SaveChanges();
@@ -38,7 +38,7 @@ namespace Infrastructure.Repositories
             return entity;
         }
 
-        public T? Update(T entity)
+        public virtual T? Update(T entity)
         {
             _dbSet.Update(entity);
             _applicationContext.SaveChanges();
@@ -46,7 +46,7 @@ namespace Infrastructure.Repositories
             return entity;
         }
 
-        public void Delete(int id)
+        public virtual void Delete(int id)
         {
             var entity = GetById(id);
 

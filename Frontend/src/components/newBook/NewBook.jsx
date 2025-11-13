@@ -56,7 +56,7 @@ const NewBook = () => {
         fetchUserLogged(id, token)
             .then(user => {
                 console.log("User role: ", user.role);
-                if (user.role === "admin" || user.role === "mod") {
+                if (user.role === 2 || user.role === 1) {
                     setAllowed(true);
                 } else {
                     navigate("/");

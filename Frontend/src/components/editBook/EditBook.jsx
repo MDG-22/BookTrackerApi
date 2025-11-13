@@ -5,7 +5,7 @@ import { fetchGenres, fetchAuthors } from '../newBook/newbook.services.js';
 import { updateBook, fetchBook } from './edit.services.js';
 import { successToast, errorToast } from '../notifications/notifications.js';
 import { useTranslate } from '../hooks/translation/UseTranslate.jsx';
-import { AuthenticationContext } from '../services/auth.context.jsx';
+import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import fetchUserLogged from '../profile/profile.services.js';
 import notFound from '../newBook/image-not-found.jpg';
 import './editBook.css';
@@ -34,7 +34,7 @@ const EditBook = () => {
         const load = async () => {
             try {
                 const user = await fetchUserLogged(userId, token);
-                if (user.role === 'admin' || user.role === 'mod') {
+                if (user.role === 2 || user.role === 1) {
                     setAllowed(true);
                 } else {
                     navigate('/');

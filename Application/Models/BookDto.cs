@@ -18,10 +18,8 @@ namespace Application.Models
         public int AuthorId { get; set; }
         public string? AuthorName { get; set; }
 
-        // Lista de id de generos
         public List<int> GenreIds { get; set; } = new List<int>();
 
-        // Lista de nombres de los generos
         public List<string> Genres { get; set; } = new List<string>();
 
         public static BookDto ToDto(Book book)

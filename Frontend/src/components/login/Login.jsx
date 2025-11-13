@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthenticationContext } from '../services/auth.context';
+import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import { useTranslate } from '../hooks/translation/UseTranslate';
 import { successToast, errorToast } from '../notifications/notifications.js';
 import Input from '../input/Input';
@@ -43,7 +43,13 @@ const Login = () => {
 
         try {
             const data = await fetchLogin(formData.email, formData.password);
-            handleUserLogin(data.token, data.username, data.id, data.role, data.img);
+            handleUserLogin(
+                data.token,
+                data.user.username,
+                data.user.id,
+                data.user.role,
+                data.user.avatarUrl
+            );
             successToast("Inicio de sesión existoso");
             navigate("/my-books");
         } catch (error) {

@@ -7,7 +7,7 @@ const fetchBook = async (id) => {
 };
 
 const addLecture = async (token, bookId) => {
-  const res = await fetch(`${API_URL}/Lecture/${bookId}`, {
+  const res = await fetch(`${API_URL}/Lecture`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

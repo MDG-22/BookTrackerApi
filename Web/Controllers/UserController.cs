@@ -19,6 +19,7 @@ namespace Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "SuperAdmin")]
         public IActionResult GetUsers()
         {
             var users = _userService.GetUsers();
@@ -43,14 +44,22 @@ namespace Web.Controllers
       // }
 
         [HttpPut("{id}")]
+        [Authorize]
         public IActionResult UpdateUser(int id, UserUpdateRequest dto)
         {
-            var user = _userService.GetUserById(id);
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "id");
+            if (userIdClaim == null) return Unauthorized();
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            if (userId != id)
+                return Forbid("You are not allowed to modify another user's data.");
 
             var updatedUser = _userService.UpdateUser(id, dto);
-
             return Ok(updatedUser);
         }
+
+
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "SuperAdmin")]

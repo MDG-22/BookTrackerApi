@@ -52,7 +52,7 @@ const NavBar = () => {
                 </Nav.Link>
                 {role === 2 && (
                   <Nav.Link as={NavLink} to="/admin-users">
-                    {translate("admin_panel")}
+                    {translate("admin")}
                   </Nav.Link>
                 )}
               </>
