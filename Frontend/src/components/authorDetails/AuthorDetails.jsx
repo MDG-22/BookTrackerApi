@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from "react-router-dom";
-import { Button, Card } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { useTranslate } from '../hooks/translation/UseTranslate.jsx';
 import './authorDetails.css'
 
@@ -33,6 +33,15 @@ const AuthorDetails = () => {
 
   return (
     <div className='details-page'>
+      <div className='author-cover-container'>
+        <img
+          className='author-cover'
+          variant="top"
+          src={imageUrl}
+        />
+
+
+      </div>
       <div className='author-body-container'>
         <div className='author-cover-container'>
         <img
@@ -47,8 +56,7 @@ const AuthorDetails = () => {
           <h2 className='author-name'>{name}</h2>
           <p className='author-description'>{description}</p>
         </div>
-
-        <Button className="me-2 mt-3" onClick={handleExit}>
+        <Button className="me-2" onClick={handleExit}>
           {translate("back_home")}
         </Button>
       </div>
