@@ -23,7 +23,7 @@ const NewBook = () => {
     const [title, setTitle] = useState("");
     const [pages, setPages] = useState("");
     const [summary, setSummary] = useState("");
-    const [imageUrl, setImageUrl] = useState("");
+    const [coverUrl, setCoverUrl] = useState("");
     const [selectedAuthor, setSelectedAuthor] = useState("");
     const [selectedGenres, setSelectedGenres] = useState([]);
 
@@ -37,7 +37,7 @@ const NewBook = () => {
         setTitle("");
         setPages("");
         setSummary("");
-        setImageUrl("");
+        setCoverUrl("");
         setSelectedAuthor("");
         setSelectedGenres([]);
     }
@@ -100,7 +100,7 @@ const NewBook = () => {
     }
 
     const handleChangeImageUrl = (event) => {
-        setImageUrl(event.target.value);
+        setCoverUrl(event.target.value);
     }
 
     const handleAddBook = async (event) => {
@@ -118,7 +118,7 @@ const NewBook = () => {
             pages: parseInt(pages, 10),
             genres: selectedGenres,
             summary,
-            imageUrl
+            coverUrl
         };
 
         try {
@@ -175,7 +175,7 @@ const NewBook = () => {
                     <input
                         type="url"
                         placeholder={`${translate("cover")} (URL)`}
-                        value={imageUrl}
+                        value={coverUrl}
                         onChange={handleChangeImageUrl}
                         className='primary-input-large'
                     />
@@ -263,7 +263,7 @@ const NewBook = () => {
             <div className='preview-book-main'>
                 <p>{translate("preview")}</p>
                 <div className='preview-book'>
-                    {imageUrl ? <img src={imageUrl} alt="ImageBook" /> : <img src={notFound} alt="Imagedefault" />}
+                    {coverUrl ? <img src={coverUrl} alt="ImageBook" /> : <img src={notFound} alt="Imagedefault" />}
                     {title ? <h3>{title}</h3> : <h3>{translate("title")}</h3>}
                     {selectedAuthor ? <h5>{authors.find(a => a.id === parseInt(selectedAuthor))?.name}</h5> : <h5>{translate("author")}</h5>}
                     {pages ? <p>{pages}</p> : <p>{translate("pages")}</p>}

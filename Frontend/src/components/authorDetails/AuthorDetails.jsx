@@ -17,7 +17,10 @@ const AuthorDetails = () => {
         if (!res.ok) throw new Error("Error de servidor");
         return res.json();
       })
-      .then(data => setAuthor(data))
+      .then(data => {
+      console.log(data); // <-- Verifica que imageUrl tenga valor
+      setAuthor(data);
+      })
       .catch(err => {
         console.error("Error cargando autor", err);
         setError(true);
@@ -33,25 +36,8 @@ const AuthorDetails = () => {
 
   return (
     <div className='details-page'>
-      <div className='author-cover-container'>
-        <img
-          className='author-cover'
-          variant="top"
-          src={imageUrl}
-        />
 
-
-      </div>
       <div className='author-body-container'>
-        <div className='author-cover-container'>
-        <img
-          className='author-cover'
-          variant="top"
-          src={imageUrl}
-        />
-
-
-      </div>
         <div className='author-body'>
           <h2 className='author-name'>{name}</h2>
           <p className='author-description'>{description}</p>
