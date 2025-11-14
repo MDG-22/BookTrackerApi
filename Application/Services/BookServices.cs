@@ -67,57 +67,46 @@ namespace Application.Services
             return BookDto.ToDto(created);
         }
 
-        public BookDto UpdateBook(int id, BookCreateAndUpdateRequest request)
-        {
-            var book = _bookRepository.GetById(id);
-            if (book == null)
-                throw new NotFoundException($"Book with id {id} not found", "BOOK_NOT_FOUND");
+public BookDto UpdateBook(int id, BookCreateAndUpdateRequest request)
+{
+ 
+    var book = _bookRepository.GetBookById(id); 
+    if (book == null)
+        throw new NotFoundException($"Book with id {id} not found", "BOOK_NOT_FOUND");
 
-            if (!string.IsNullOrWhiteSpace(request.Title))
-                book.Title = request.Title;
+    
+    if (!string.IsNullOrWhiteSpace(request.Title))
+        book.Title = request.Title;
 
-            book.Pages = request.Pages;
-            book.Summary = request.Summary;
-            book.CoverUrl = request.CoverUrl;
+    book.Pages   = request.Pages;
+    book.Summary = request.Summary;
+    book.CoverUrl = request.CoverUrl;
 
-            var updated = _bookRepository.Update(book);
-            return BookDto.ToDto(updated);
-        }
-        // public BookDto UpdateBook(int id, BookCreateAndUpdateRequest request)
-        // {
-        //     // Obtener el libro existente
-        //     var book = _bookRepository.GetById(id);
-        //     if (book == null)
-        //         throw new NotFoundException($"Book with id {id} not found", "BOOK_NOT_FOUND");
+    
+    var author = _authorRepository.GetById(request.AuthorId);
+    if (author == null)
+        throw new NotFoundException($"Author with id {request.AuthorId} not found", "AUTHOR_NOT_FOUND");
 
-        //     // Actualizar título, páginas, resumen y coverUrl
-        //     if (!string.IsNullOrWhiteSpace(request.Title))
-        //         book.Title = request.Title;
+    book.AuthorId = request.AuthorId;
+    book.Author   = author;
 
-        //     book.Pages = request.Pages;
-        //     book.Summary = request.Summary;
-        //     book.CoverUrl = request.CoverUrl;
+    
+    var genres = _genreRepository.GetAll()
+        .Where(g => request.GenreIds.Contains(g.Id))
+        .ToList();
 
-        //     // Actualizar autor si cambió
-        //     var author = _authorRepository.GetById(request.AuthorId);
-        //     if (author == null)
-        //         throw new NotFoundException($"Author with id {request.AuthorId} not found", "AUTHOR_NOT_FOUND");
+    
+    book.Genres.Clear();           
+    foreach (var g in genres)
+    {
+        book.Genres.Add(g);       
+    }
 
-        //     book.AuthorId = request.AuthorId;
-        //     book.Author = author;
+    var updated = _bookRepository.Update(book);
 
-        //     // Actualizar géneros
-        //     var genres = _genreRepository.GetAll()
-        //         .Where(g => request.GenreIds.Contains(g.Id))
-        //         .ToList();
+    return BookDto.ToDto(updated);
+}
 
-        //     book.Genres = genres;
-
-        //     // Guardar cambios
-        //     var updated = _bookRepository.Update(book);
-
-        //     return BookDto.ToDto(updated);
-        // }
 
 
         public void DeleteBook(int id)

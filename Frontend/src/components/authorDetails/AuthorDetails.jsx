@@ -27,13 +27,22 @@ const AuthorDetails = () => {
   if (error) return <p>{translate("error_loading_author")}</p>;
   if (!author) return <p>{translate("loading_author")}</p>;
 
-  const { name, description, books } = author;
+  const { name, description, imageUrl } = author;
 
   const handleExit = () => navigate("/");
 
   return (
     <div className='details-page'>
       <div className='author-body-container'>
+        <div className='author-cover-container'>
+        <img
+          className='author-cover'
+          variant="top"
+          src={imageUrl}
+        />
+
+
+      </div>
         <div className='author-body'>
           <h2 className='author-name'>{name}</h2>
           <p className='author-description'>{description}</p>

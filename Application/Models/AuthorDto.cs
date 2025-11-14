@@ -13,6 +13,8 @@ namespace Application.Models
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
+        public string ImageUrl { get; set; } = string.Empty;
+
         public List<BookDto> Books { get; set; } = new List<BookDto>();
 
         public static AuthorDto ToDto(Author author)
@@ -22,7 +24,8 @@ namespace Application.Models
                 Id = author.Id,
                 Name = author.Name,
                 Description = author.Description,
-                Books = author.Books?.Select(BookDto.ToDto).ToList() ?? new List<BookDto>()
+                Books = author.Books?.Select(BookDto.ToDto).ToList() ?? new List<BookDto>(),
+                ImageUrl = author.ImageUrl
             };
         }
 

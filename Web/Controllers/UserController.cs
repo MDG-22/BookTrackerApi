@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using System.Security.Claims;
+using Application.Interfaces;
 using Application.Models;
 using Application.Models.Requests;
 using Microsoft.AspNetCore.Authorization;
@@ -35,13 +36,13 @@ namespace Web.Controllers
             return Ok(user);
         }
 
-      // [HttpPost]
-      // public IActionResult CreateUser(UserCreateRequest dto)
-      // {
-      //     var newUser = _userService.CreateUser(dto);
+    //   [HttpPost]
+    //   public IActionResult CreateUser(UserCreateRequest dto)
+    //   {
+    //       var newUser = _userService.CreateUser(dto);
 
-      //     return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser);
-      // }
+    //       return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser);
+    //   }
 
         [HttpPut("{id}")]
         [Authorize]
@@ -61,42 +62,42 @@ namespace Web.Controllers
 
 
 
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "SuperAdmin")]
-        public IActionResult DeleteUser(int id)
-        {
-            _userService.DeleteUser(id);
-
-            return NoContent();
-        }
-
         // [HttpDelete("{id}")]
-        // [Authorize]
+        // [Authorize(Roles = "SuperAdmin")]
         // public IActionResult DeleteUser(int id)
         // {
-        //     var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "id");
-        //     if (userIdClaim == null) return Unauthorized();
-
-        //     int userId = int.Parse(userIdClaim.Value);
-
-        //     // Obtener el rol desde el JWT
-        //     var roleClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
-        //     var userRole = roleClaim?.Value ?? "User"; // Por default usuario normal
-
-        //     // 1. Si es SuperAdmin → puede borrar a cualquiera
-        //     if (userRole == "SuperAdmin")
-        //     {
-        //         _userService.DeleteUser(id);
-        //         return NoContent();
-        //     }
-
-        //     // 2. Si NO es SuperAdmin → solo puede borrarse a sí mismo
-        //     if (userId != id)
-        //         return Forbid("You cannot delete another user's account.");
-
         //     _userService.DeleteUser(id);
+
         //     return NoContent();
         // }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public IActionResult DeleteUser(int id)
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "id");
+            if (userIdClaim == null) return Unauthorized();
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            // Obtener el rol desde el JWT
+            var roleClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            var userRole = roleClaim?.Value ?? "User"; // Por default usuario normal
+
+            // 1. Si es SuperAdmin → puede borrar a cualquiera
+            if (userRole == "SuperAdmin")
+            {
+                _userService.DeleteUser(id);
+                return NoContent();
+            }
+
+            // 2. Si NO es SuperAdmin → solo puede borrarse a sí mismo
+            if (userId != id)
+                return Forbid("You cannot delete another user's account.");
+
+            _userService.DeleteUser(id);
+            return NoContent();
+        }
 
 
         [HttpGet("admin")]
