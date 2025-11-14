@@ -37,9 +37,10 @@ const Login = () => {
 
         const { email, password } = formData;
 
-        // if (!validateEmail(email) || !validatePassword(password, 6, 12, true, true)) {
-        //     errorToast("Correo y/o contraseña incorrecto/s");
-        // }
+        if (!validateEmail(email) || !validatePassword(password, 6, 12, true, true)) {
+            errorToast("Correo y/o contraseña incorrecto/s");
+            return;
+        }
 
         try {
             const data = await fetchLogin(formData.email, formData.password);
@@ -58,7 +59,7 @@ const Login = () => {
             if (error.status === 401 || error.status === 404) {
                 errorToast("Correo y/o contraseña incorrecto/s");
             } else {
-                errorToast("Error desconocido al iniciar sesión");
+                errorToast("Correo y/o contraseña incorrecto/s");
             }
         }
 

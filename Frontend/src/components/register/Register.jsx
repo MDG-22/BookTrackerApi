@@ -42,14 +42,17 @@ function Register() {
 
     if (!validateString(nombreUsuario, 3, 12)) {
       errorToast("El nombre de usuario debe tener entre 3 y 12 caracteres");
+     return;
     }
 
     if (!validateEmail(email)) {
       errorToast("El mail ingresado es inválido");
+      return;
     }
 
     if (!validatePassword(contrasena, 6, 12, true, true)) {
       errorToast("La contraseña debe tener entre 6 y 12 caracteres. Al menos 1 mayúscula y 1 número");
+      return;
     }
 
     try {
