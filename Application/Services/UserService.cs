@@ -56,6 +56,8 @@ namespace Application.Services
 
             if (!string.IsNullOrWhiteSpace(dto.AvatarUrl))
                 user.AvatarUrl = dto.AvatarUrl;
+            // if (dto.AvatarUrl != null)
+            //     user.AvatarUrl = dto.AvatarUrl;
 
             if (!string.IsNullOrWhiteSpace(dto.Description))
                 user.Description = dto.Description;

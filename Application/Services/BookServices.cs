@@ -83,6 +83,42 @@ namespace Application.Services
             var updated = _bookRepository.Update(book);
             return BookDto.ToDto(updated);
         }
+        // public BookDto UpdateBook(int id, BookCreateAndUpdateRequest request)
+        // {
+        //     // Obtener el libro existente
+        //     var book = _bookRepository.GetById(id);
+        //     if (book == null)
+        //         throw new NotFoundException($"Book with id {id} not found", "BOOK_NOT_FOUND");
+
+        //     // Actualizar título, páginas, resumen y coverUrl
+        //     if (!string.IsNullOrWhiteSpace(request.Title))
+        //         book.Title = request.Title;
+
+        //     book.Pages = request.Pages;
+        //     book.Summary = request.Summary;
+        //     book.CoverUrl = request.CoverUrl;
+
+        //     // Actualizar autor si cambió
+        //     var author = _authorRepository.GetById(request.AuthorId);
+        //     if (author == null)
+        //         throw new NotFoundException($"Author with id {request.AuthorId} not found", "AUTHOR_NOT_FOUND");
+
+        //     book.AuthorId = request.AuthorId;
+        //     book.Author = author;
+
+        //     // Actualizar géneros
+        //     var genres = _genreRepository.GetAll()
+        //         .Where(g => request.GenreIds.Contains(g.Id))
+        //         .ToList();
+
+        //     book.Genres = genres;
+
+        //     // Guardar cambios
+        //     var updated = _bookRepository.Update(book);
+
+        //     return BookDto.ToDto(updated);
+        // }
+
 
         public void DeleteBook(int id)
         {

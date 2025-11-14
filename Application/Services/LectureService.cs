@@ -77,6 +77,11 @@ namespace Application.Services
             if (dto.StartDate.HasValue) lecture.StartDate = dto.StartDate.Value;
             if (dto.FinishDate.HasValue) lecture.FinishDate = dto.FinishDate.Value;
             lecture.Status = dto.Status;
+            // lecture.Rating = dto.Rating;
+            // lecture.PageCount = dto.PageCount;
+            // lecture.StartDate = dto.StartDate;
+            // lecture.FinishDate = dto.FinishDate;
+            // lecture.Status = dto.Status;
 
             _lectureRepository.Update(lecture);
             return LectureDto.ToDto(lecture);

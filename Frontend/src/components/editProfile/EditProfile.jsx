@@ -11,12 +11,18 @@ const EditProfile = ({ user, onClose, onUserUpdated }) => {
 
   const [username, setUsername] = useState(user.username);
   const [description, setDescription] = useState(user.description);
-  const [profileImage, setProfileImage] = useState(user.avatarUrl); // ✅ CORREGIDO
+  const [profileImage, setProfileImage] = useState(user.avatarUrl); 
   const [imageUrlInput, setImageUrlInput] = useState('');
   const [usernameError, setUsernameError] = useState('');
   const [showUrlInput, setShowUrlInput] = useState(false);
 
   const handleImageUrlChange = (e) => setImageUrlInput(e.target.value);
+
+  const handleRemoveImage = () => {
+    setProfileImage('');
+    setImageUrlInput('');
+    setShowUrlInput(false);
+  };
 
   const handleApplyImageUrl = () => {
     if (imageUrlInput.trim() !== '') {
@@ -39,17 +45,15 @@ const EditProfile = ({ user, onClose, onUserUpdated }) => {
     const updatedUser = {
       username: username,
       description: description,
-      avatarUrl: profileImage // ✅ CAMBIO CLAVE
+      avatarUrl: profileImage
     };
 
     try {
       const updated = await updateUserProfile(id, token, updatedUser);
 
-      // Actualiza la NavBar
       updateUsername(username);
       updateProfilePicture(profileImage);
 
-      // Actualiza el estado en Profile
       onUserUpdated(updated);
       onClose();
 
@@ -105,6 +109,16 @@ const EditProfile = ({ user, onClose, onUserUpdated }) => {
                   >
                     Cancelar
                   </Button>
+
+                  <Button
+                    variant="danger"
+                    className='btn-custom-secondary'
+                    size="sm"
+                    onClick={handleRemoveImage}
+                  >
+                    Quitar imagen
+                  </Button>
+
                   <Button
                     variant="primary"
                     className="btn-custom-primary"

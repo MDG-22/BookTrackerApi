@@ -70,6 +70,35 @@ namespace Web.Controllers
             return NoContent();
         }
 
+        // [HttpDelete("{id}")]
+        // [Authorize]
+        // public IActionResult DeleteUser(int id)
+        // {
+        //     var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "id");
+        //     if (userIdClaim == null) return Unauthorized();
+
+        //     int userId = int.Parse(userIdClaim.Value);
+
+        //     // Obtener el rol desde el JWT
+        //     var roleClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+        //     var userRole = roleClaim?.Value ?? "User"; // Por default usuario normal
+
+        //     // 1. Si es SuperAdmin → puede borrar a cualquiera
+        //     if (userRole == "SuperAdmin")
+        //     {
+        //         _userService.DeleteUser(id);
+        //         return NoContent();
+        //     }
+
+        //     // 2. Si NO es SuperAdmin → solo puede borrarse a sí mismo
+        //     if (userId != id)
+        //         return Forbid("You cannot delete another user's account.");
+
+        //     _userService.DeleteUser(id);
+        //     return NoContent();
+        // }
+
+
         [HttpGet("admin")]
         [Authorize(Roles = "SuperAdmin")]
         public IActionResult GetAllUsers()

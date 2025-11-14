@@ -26,7 +26,7 @@ const EditBook = () => {
     const [title, setTitle] = useState("");
     const [pages, setPages] = useState("");
     const [summary, setSummary] = useState("");
-    const [imageUrl, setImageUrl] = useState("");
+    const [coverUrl, setCoverUrl] = useState("");
     const [selectedAuthor, setSelectedAuthor] = useState("");
     const [selectedGenres, setSelectedGenres] = useState([]);
 
@@ -46,9 +46,9 @@ const EditBook = () => {
                 setTitle(bookData.title);
                 setPages(bookData.pages);
                 setSummary(bookData.summary);
-                setImageUrl(bookData.imageUrl);
+                setCoverUrl(bookData.coverUrl);
                 setSelectedAuthor(bookData.authorId);
-                setSelectedGenres(bookData.genres.map(g => String(g.id)));
+                setSelectedGenres(bookData.genreIds);
 
                 const [authorsData, genresData] = await Promise.all([
                     fetchAuthors(token),
@@ -95,8 +95,8 @@ const EditBook = () => {
         setSummary(event.target.value);
     }
 
-    const handleEditImageUrl = (event) => {
-        setImageUrl(event.target.value);
+    const handleEditCoverUrl = (event) => {
+        setCoverUrl(event.target.value);
     }
 
     const handleSubmit = async (event) => {
@@ -109,13 +109,14 @@ const EditBook = () => {
         }
 
         const bookData = {
-            title,
-            authorId: parseInt(selectedAuthor),
+            title: title.trim(),
+            authorId: parseInt(selectedAuthor, 10),
             pages: parseInt(pages, 10),
-            genres: selectedGenres,
-            summary,
-            imageUrl
+            genreIds: selectedGenres,
+            summary: summary.trim(),
+            coverUrl: coverUrl?.trim() || null
         };
+
 
         try {
             const updated = await updateBook(token, bookId, bookData);
@@ -125,6 +126,7 @@ const EditBook = () => {
             errorToast(error.message);
         }
     };
+
 
 
     const validateForm = ({ title, selectedAuthor, pages, selectedGenres, summary }) => {
@@ -168,8 +170,8 @@ const EditBook = () => {
                     <input
                         type="url"
                         placeholder={`${translate("cover")} (URL)`}
-                        value={imageUrl}
-                        onChange={handleEditImageUrl}
+                        value={coverUrl}
+                        onChange={handleEditCoverUrl}
                         className='primary-input-large'
                     />
                 </Row>
@@ -184,7 +186,7 @@ const EditBook = () => {
                             >
                                 <option value="" disabled hidden>{translate("author")}</option>
                                 {authors.map(author => (
-                                    <option key={author.id} value={author.id}>{author.authorName}</option>
+                                    <option key={author.id} value={author.id}>{author.name}</option>
                                 ))}
                             </select>
                         </FormGroup>
@@ -210,19 +212,29 @@ const EditBook = () => {
                             <FormCheck
                                 key={genre.id}
                                 type="checkbox"
-                                label={translate(genre.name)}
+                                label={translate(genre.genreName)}
                                 value={genre.id}
-                                checked={selectedGenres.includes(String(genre.id))}
-                                onChange={handleEditGenres}
+                                checked={selectedGenres.includes(genre.id)}
+                                onChange={(e) => {
+                                    const genreId = genre.id; // número
+                                    const isChecked = e.target.checked;
+                                    setSelectedGenres(prev =>
+                                        isChecked
+                                            ? Array.from(new Set([...prev, genreId]))
+                                            : prev.filter(id => id !== genreId)
+                                    );
+                                }}
                             />
+
+
                         ))}
                     </div>
                     <Form.Text className="text-muted mt-2">
                         {translate("selected")}: {
                             allGenres
-                                .filter(genre => selectedGenres.includes(String(genre.id)))
-                                .map(genre => genre.name)
-                                .join(', ') || translate("none_selected") // Muestra "Ninguno seleccionado" si no hay géneros
+                                .filter(genre => selectedGenres.includes(genre.id))
+                                .map(genre => translate(genre.genreName))
+                                .join(', ') || translate("none_selected")
                         }
                     </Form.Text>
                 </Row>
@@ -249,9 +261,9 @@ const EditBook = () => {
             <div className='preview-book-main'>
                 <p>{translate("preview")}</p>
                 <div className='preview-book'>
-                    {imageUrl ? <img src={imageUrl} alt="ImageBook" /> : <img src={notFound} alt="Imagedefault" />}
+                    {coverUrl ? <img src={coverUrl} alt="ImageBook" /> : <img src={notFound} alt="Imagedefault" />}
                     {title ? <h3>{title}</h3> : <h3>{translate("title")}</h3>}
-                    {selectedAuthor ? <h5>{authors.find(a => a.id === parseInt(selectedAuthor))?.authorName}</h5> : <h5>{translate("author")}</h5>}
+                    {selectedAuthor ? <h5>{authors.find(a => a.id === parseInt(selectedAuthor))?.name}</h5> : <h5>{translate("author")}</h5>}
                     {pages ? <p>{pages}</p> : <p>{translate("pages")}</p>}
                 </div>
             </div>

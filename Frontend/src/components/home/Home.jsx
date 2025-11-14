@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import BookGroup from '../bookGroup/BookGroup';
 import CardBook from '../cardBook/CardBook';
-import { fetchLectures, getBooks, getPopularBooks } from './home.services';
+import { fetchLectures, getBooks, getRandomPopularBooks } from './home.services';
 import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import { useTranslate } from "../hooks/translation/UseTranslate.jsx";
 import { useNavigate } from "react-router-dom";
@@ -38,6 +38,26 @@ const Home = () => {
     navigate(`/login/`, { replace: true });
   }
 
+  const getRandomBooks = async () => {
+    // Crear un array con IDs del 1 al 40
+    const allIds = Array.from({ length: 40 }, (_, i) => i + 1);
+
+    // Mezclar el array usando Fisher-Yates
+    for (let i = allIds.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [allIds[i], allIds[j]] = [allIds[j], allIds[i]];
+    }
+
+    // Tomar los primeros 10 IDs
+    const selectedIds = allIds.slice(0, 10);
+
+    // Si tienes una función que trae un libro por ID:
+    const books = await Promise.all(selectedIds.map(id => getBook(id)));
+
+    return books;
+  };
+
+
   useEffect(() => {
     const loadData = async () => {
       if (token) {
@@ -47,17 +67,18 @@ const Home = () => {
         const booksData = await getBooks(token);
         setBooks(booksData);
 
-        const popularBooksData = await getPopularBooks();
+        const popularBooksData = await getRandomPopularBooks();
         setPopularBooks(popularBooksData);
+
       } else {
-        const popularBooksData = await getPopularBooks();
+        const popularBooksData = await getRandomPopularBooks();
         setPopularBooks(popularBooksData);
+
       }
-
     };
-
     loadData();
   }, [token]);
+
 
   // Procesar los datos una vez que esten cargados
   useEffect(() => {
@@ -89,9 +110,11 @@ const Home = () => {
         )}
       </BookGroup>
 
-      {token && <BookGroup title={translate('reading')}>
+      {token && <BookGroup title={translate('reading')} >
         {booksUser.length === 0 ? (
-          <p>{translate('loading-books')}</p>
+          <p style={{ width: '100%', textAlign: 'center' }}>
+            {translate('not_reading_yet')}
+          </p>
         ) : (
           booksUser.map((book) => (
             <CardBook key={book.id} book={book} handleAuthor={handleAuthor} handleClick={handleClick} translate={translate} />

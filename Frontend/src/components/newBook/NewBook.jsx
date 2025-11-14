@@ -191,10 +191,10 @@ const NewBook = () => {
                                 onChange={handleChangeSelectAuthor}
                                 value={selectedAuthor}
                             >
-                                <option value="" disabled hidden>{translate("author")}</option> {/* Opción deshabilitada y oculta por defecto */}
+                                <option value="" disabled hidden>{translate("author")}</option>
                                 {authors.map(author => (
                                     <option key={author.id} value={author.id}>
-                                        {author.authorName}
+                                        {author.name}
                                     </option>
                                 ))}
                             </select>
@@ -224,7 +224,7 @@ const NewBook = () => {
                                 key={genre.id}
                                 type="checkbox"
                                 id={`genre-checkbox-${genre.id}`}
-                                label={translate(genre.name)}
+                                label={translate(genre.genreName)}
                                 value={genre.id}
                                 checked={selectedGenres.includes(String(genre.id))}
                                 onChange={handleChangeGenres}
@@ -235,8 +235,8 @@ const NewBook = () => {
                         {translate("selected")}: {
                             allGenres
                                 .filter(genre => selectedGenres.includes(String(genre.id)))
-                                .map(genre => translate(genre.name))
-                                .join(', ') || translate("none_selected") // Muestra "Ninguno seleccionado" si no hay géneros
+                                .map(genre => translate(genre.genreName))
+                                .join(', ') || translate("none_selected")
                         }
                     </Form.Text>
                 </Row>
@@ -265,7 +265,7 @@ const NewBook = () => {
                 <div className='preview-book'>
                     {imageUrl ? <img src={imageUrl} alt="ImageBook" /> : <img src={notFound} alt="Imagedefault" />}
                     {title ? <h3>{title}</h3> : <h3>{translate("title")}</h3>}
-                    {selectedAuthor ? <h5>{authors.find(a => a.id === parseInt(selectedAuthor))?.authorName}</h5> : <h5>{translate("author")}</h5>}
+                    {selectedAuthor ? <h5>{authors.find(a => a.id === parseInt(selectedAuthor))?.name}</h5> : <h5>{translate("author")}</h5>}
                     {pages ? <p>{pages}</p> : <p>{translate("pages")}</p>}
                 </div>
             </div>

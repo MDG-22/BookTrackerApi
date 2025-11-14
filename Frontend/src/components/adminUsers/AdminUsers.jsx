@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../services/auth/AuthContextProvider.jsx";
-import { fetchUsers, updateUser, deleteUser } from "./adminUsers.services.js";
+import { fetchUsers, updateUserRole, deleteUser } from "./adminUsers.services.js";
 import { useNavigate } from "react-router-dom";
 import { useTranslate } from "../hooks/translation/UseTranslate";
 import { errorToast, infoToast, successToast } from "../notifications/notifications.js";
@@ -50,19 +50,22 @@ const AdminUsers = () => {
 
   const handleUpdateUser = async (id) => {
     try {
-      const updatedData = { role: newRole };
       if (id === loggedId) updateRole(newRole);
 
-      const updatedUser = await updateUser(id, token, updatedData);
-      handleUpdate(updatedUser);
+      await updateUserRole(id, token, newRole);
+
+      handleUpdate({ ...selectedUser, role: newRole });
+
       successToast("Usuario actualizado correctamente");
       setIsEditing(false);
       setSelectedUser(null);
+
     } catch (error) {
       console.error("Error al actualizar", error);
       errorToast("Error al actualizar");
     }
   };
+
 
   const handleDeleteUser = async (id) => {
     try {

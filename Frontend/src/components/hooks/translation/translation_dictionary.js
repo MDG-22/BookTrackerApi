@@ -111,6 +111,7 @@ export const translation_dictionary = {
         { key: "login_img_text2", value: "lecturas" },
         { key: "update_success", value: "Datos actualizados con éxito" },
         { key: "update_error", value: "Error al actualizar el usuario" },
+        { key: "not_reading_yet", value: "¡Vaya! No hay libros en tu lista de lectura por ahora" },
     ],
     en: [
         { key: "spanish_lang", value: "Spanish" },
@@ -216,6 +217,7 @@ export const translation_dictionary = {
         { key: "search_placeholder", value: "Search..." },
         { key: "update_success", value: "User data updated successfully" },
         { key: "update_error", value: "Error updating user" },
+        { key: "not_reading_yet", value: "Oops! There’s nothing on your reading list right now" },
 
 
         // GENRES

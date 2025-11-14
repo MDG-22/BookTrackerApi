@@ -6,6 +6,7 @@ import { updateUser, deleteUser } from './settings.services.js';
 import { useNavigate } from 'react-router-dom';
 import './Settings.css';
 import { useTranslate } from '../hooks/translation/UseTranslate.jsx';
+import { validateEmail, validatePassword } from '../auth/auth.services.js';
 
 function Settings() {
   const [email, setEmail] = useState('');
@@ -21,12 +22,12 @@ function Settings() {
       return errorToast(translate('no_data_to_update') || 'No ingresaste ningún dato para actualizar');
     }
 
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return errorToast(translate('invalid_email') || 'El formato del email no es válido');
+    if (email && !validateEmail(email)) {
+      return errorToast("El mail ingresado es inválido");
     }
 
-    if (password && password.length < 6) {
-      return errorToast(translate('weak_password') || 'La contraseña debe tener al menos 6 caracteres');
+    if (password && !validatePassword(password, 6, 12, true, true)) {
+      return errorToast("La contraseña debe tener entre 6 y 12 caracteres. Al menos 1 mayúscula y 1 número");
     }
 
     const updateData = {};
