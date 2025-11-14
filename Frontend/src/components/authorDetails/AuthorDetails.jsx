@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from "react-router-dom";
-import { Button, Card } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { useTranslate } from '../hooks/translation/UseTranslate.jsx';
 import './authorDetails.css'
 
@@ -27,19 +27,27 @@ const AuthorDetails = () => {
   if (error) return <p>{translate("error_loading_author")}</p>;
   if (!author) return <p>{translate("loading_author")}</p>;
 
-  const { name, description, books } = author;
+  const { name, description } = author;
 
   const handleExit = () => navigate("/");
 
   return (
     <div className='details-page'>
+      <div className='author-cover-container'>
+        <img
+          className='author-cover'
+          variant="top"
+          src={imageUrl}
+        />
+
+
+      </div>
       <div className='author-body-container'>
         <div className='author-body'>
           <h2 className='author-name'>{name}</h2>
           <p className='author-description'>{description}</p>
         </div>
-
-        <Button className="me-2 mt-3" onClick={handleExit}>
+        <Button className="me-2" onClick={handleExit}>
           {translate("back_home")}
         </Button>
       </div>
