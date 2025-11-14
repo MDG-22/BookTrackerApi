@@ -15,7 +15,6 @@ const fetchLogin = async (email, password) => {
     throw error;
   }
 
-  // Asegurar que role sea número
   return {
     ...data,
     role: Number(data.role),

@@ -11,11 +11,13 @@ namespace Application.Models
     public class BookCreateAndUpdateRequest
     {
         [Required]
-        [StringLength(200)]
+        [StringLength(50)]
+   
         public string Title { get; set; }
         public int Pages { get; set; }
         [Required]
-        [StringLength(200)]
+        [StringLength(1000)]
+      
         public string Summary { get; set; }
         [Url]
         public string? CoverUrl { get; set; }

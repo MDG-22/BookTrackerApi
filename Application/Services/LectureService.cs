@@ -72,11 +72,11 @@ namespace Application.Services
             if (lecture == null)
                 throw new NotFoundException($"Lecture with id {id} not found", "LECTURE_NOT_FOUND");
 
-            if (dto.Rating.HasValue) lecture.Rating = dto.Rating.Value;
-            if (dto.PageCount.HasValue) lecture.PageCount = dto.PageCount.Value;
             if (dto.StartDate.HasValue) lecture.StartDate = dto.StartDate.Value;
             if (dto.FinishDate.HasValue) lecture.FinishDate = dto.FinishDate.Value;
             lecture.Status = dto.Status;
+            lecture.Rating = dto.Rating;
+            lecture.PageCount = dto.PageCount;
 
             _lectureRepository.Update(lecture);
             return LectureDto.ToDto(lecture);

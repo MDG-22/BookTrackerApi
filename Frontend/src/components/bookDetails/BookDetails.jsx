@@ -8,7 +8,11 @@ import {
   deleteBook,
 } from "./bookdetails.services.js";
 import { Button, Modal } from "react-bootstrap";
-import { errorToast, infoToast, successToast } from "../notifications/notifications.js";
+import {
+  errorToast,
+  infoToast,
+  successToast,
+} from "../notifications/notifications.js";
 import { AuthenticationContext } from "../services/auth/AuthContextProvider.jsx";
 import "./bookDetails.css";
 import { useTranslate } from "../hooks/translation/UseTranslate.jsx";
@@ -22,10 +26,17 @@ const BookDetails = () => {
   const { id } = useParams();
   const { token, role } = useContext(AuthenticationContext);
 
+  const LectureStatusEnum = {
+    0: translate("Para leer"),
+    1: translate("Leyendo"),
+    2: translate("Leído"),
+  };
+
   useEffect(() => {
     const loadData = async () => {
       try {
         const bookData = await fetchBook(id);
+        console.log("BOOK DATA:", bookData);
         setBook(bookData);
 
         if (token) {
@@ -43,9 +54,20 @@ const BookDetails = () => {
 
   if (!book) return <p style={{ padding: "2rem" }}>Cargando libro...</p>;
 
-  const { title, pages, summary, coverUrl, authorName, genres, id: bookId } = book;
+  const {
+    title,
+    pages,
+    summary,
+    coverUrl,
+    authorId,
+    authorName,
+    genres,
+    id: bookId,
+  } = book;
 
-  const alreadyInLectures = lectures.some((lecture) => lecture.bookId === bookId);
+  const alreadyInLectures = lectures.some(
+    (lecture) => lecture.bookId === bookId
+  );
   const lectureFound = lectures.find((lecture) => lecture.bookId === bookId);
 
   const handleEditClick = () => navigate(`/edit-book/${bookId}`);
@@ -61,6 +83,11 @@ const BookDetails = () => {
       console.error(error);
       errorToast("Ocurrió un error al eliminar el libro.");
     }
+  };
+
+  const handleAuthor = () => {
+    if (!authorId) return;
+    navigate(`/authors/${authorId}`);
   };
 
   const handleAddLecture = async () => {
@@ -94,29 +121,46 @@ const BookDetails = () => {
   return (
     <div className="details-page">
       <div className="book-cover-container">
-        <img className="book-cover" src={coverUrl} alt={`Portada de ${title}`} />
+        <img
+          className="book-cover"
+          src={coverUrl}
+          alt={`Portada de ${title}`}
+        />
       </div>
 
       <div className="book-body-container">
         <div className="book-body">
           <span className="book-title">{translate(title)}</span>
-          <span className="book-author">{translate(authorName)}</span>
+          <span className="book-author" onClick={handleAuthor}>
+              {translate(authorName)}
+            </span>
           <span className="book-summary">{summary}</span>
           <span className="book-pages">{pages} páginas</span>
-          <span className="book-genres">{genres?.map((g) => translate(g)).join(", ")}</span>
+          <span className="book-genres">
+            {genres?.map(g => g).join(", ")}
+          </span>
         </div>
 
         <br />
 
         {alreadyInLectures ? (
           <>
-            <p className="book-details-status">{lectureFound?.status}</p>
-            <Button className="removeLecture-btn" variant="danger" onClick={handleRemoveLecture}>
+            <p className="book-details-status">
+              {LectureStatusEnum[lectureFound.status]}
+            </p>
+            <Button
+              className="removeLecture-btn"
+              variant="danger"
+              onClick={handleRemoveLecture}
+            >
               {translate("remove_from_list")}
             </Button>
           </>
         ) : (
-          <Button className="addLecture-btn btn-dark" onClick={handleAddLecture}>
+          <Button
+            className="addLecture-btn btn-dark"
+            onClick={handleAddLecture}
+          >
             {translate("add_to_list")}
           </Button>
         )}
@@ -124,11 +168,19 @@ const BookDetails = () => {
         {(role === 1 || role === 2) && (
           <>
             <hr />
-            <Button className="editBook-btn" variant="dark" onClick={handleEditClick}>
+            <Button
+              className="editBook-btn"
+              variant="dark"
+              onClick={handleEditClick}
+            >
               {translate("edit_book")}
             </Button>
 
-            <Button className="deleteBook-btn" variant="outline-danger" onClick={() => setShowModal(true)}>
+            <Button
+              className="deleteBook-btn"
+              variant="outline-danger"
+              onClick={() => setShowModal(true)}
+            >
               {translate("delete_book")}
             </Button>
 
@@ -137,11 +189,16 @@ const BookDetails = () => {
                 <Modal.Title>¿Eliminar libro?</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                ¿Estás seguro de que querés eliminar este libro? Esta acción no se puede deshacer.
+                ¿Estás seguro de que querés eliminar este libro? Esta acción no
+                se puede deshacer.
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={() => setShowModal(false)}>Cancelar</Button>
-                <Button variant="danger" onClick={handleDeleteBook}>Eliminar</Button>
+                <Button variant="secondary" onClick={() => setShowModal(false)}>
+                  Cancelar
+                </Button>
+                <Button variant="danger" onClick={handleDeleteBook}>
+                  Eliminar
+                </Button>
               </Modal.Footer>
             </Modal>
           </>

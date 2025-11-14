@@ -1,24 +1,27 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Modal, Button, Form, Image } from 'react-bootstrap';
 import { errorToast } from '../notifications/notifications';
-import { useContext } from 'react';
-import { AuthenticationContext } from '../services/auth.context';
+import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import updateUserProfile from './editprofile.services.js';
 import profileImageDefault from '../profile/profileImageDefault.png';
 import './editProfile.css';
 
 const EditProfile = ({ user, onClose, onUserUpdated }) => {
-  const { id, token, role, updateUsername, updateProfilePicture } = useContext(AuthenticationContext);
+  const { id, token, updateUsername, updateProfilePicture } = useContext(AuthenticationContext);
 
   const [username, setUsername] = useState(user.username);
   const [description, setDescription] = useState(user.description);
-  const [profileImage, setProfileImage] = useState(user.profilePictureUrl);
+  const [profileImage, setProfileImage] = useState(user.avatarUrl); 
   const [imageUrlInput, setImageUrlInput] = useState('');
   const [usernameError, setUsernameError] = useState('');
   const [showUrlInput, setShowUrlInput] = useState(false);
 
-  const handleImageUrlChange = (e) => {
-    setImageUrlInput(e.target.value);
+  const handleImageUrlChange = (e) => setImageUrlInput(e.target.value);
+
+  const handleRemoveImage = () => {
+    setProfileImage('');
+    setImageUrlInput('');
+    setShowUrlInput(false);
   };
 
   const handleApplyImageUrl = () => {
@@ -42,17 +45,15 @@ const EditProfile = ({ user, onClose, onUserUpdated }) => {
     const updatedUser = {
       username: username,
       description: description,
-      profilePictureUrl: profileImage
+      avatarUrl: profileImage
     };
 
     try {
       const updated = await updateUserProfile(id, token, updatedUser);
 
-      // Actualiza los valores para la NavBar
       updateUsername(username);
       updateProfilePicture(profileImage);
 
-      // Actualiza Profile
       onUserUpdated(updated);
       onClose();
 
@@ -60,25 +61,10 @@ const EditProfile = ({ user, onClose, onUserUpdated }) => {
       console.error(error);
       errorToast("Error al actualizar el perfil");
     }
-
-    onClose();
   };
 
-  const handleShowUrl = () => {
-    setShowUrlInput(true);
-  };
-
-  const handleCloseUrl = () => {
-    setShowUrlInput(false);
-  };
-
-  const handleSetUsername = (e) => {
-    setUsername(e.target.value);
-  };
-
-  const handleSetDescription = (e) => {
-    setDescription(e.target.value);
-  };
+  const handleShowUrl = () => setShowUrlInput(true);
+  const handleCloseUrl = () => setShowUrlInput(false);
 
   return (
     <Modal show={true} onHide={onClose} centered>
@@ -123,6 +109,16 @@ const EditProfile = ({ user, onClose, onUserUpdated }) => {
                   >
                     Cancelar
                   </Button>
+
+                  <Button
+                    variant="danger"
+                    className='btn-custom-secondary'
+                    size="sm"
+                    onClick={handleRemoveImage}
+                  >
+                    Quitar imagen
+                  </Button>
+
                   <Button
                     variant="primary"
                     className="btn-custom-primary"
@@ -142,7 +138,7 @@ const EditProfile = ({ user, onClose, onUserUpdated }) => {
               type="text"
               placeholder="Nombre de usuario"
               value={username}
-              onChange={handleSetUsername}
+              onChange={(e) => setUsername(e.target.value)}
               isInvalid={!!usernameError}
             />
             <Form.Control.Feedback type="invalid">
@@ -157,7 +153,7 @@ const EditProfile = ({ user, onClose, onUserUpdated }) => {
               rows={3}
               placeholder="Descripción"
               value={description || ""}
-              onChange={handleSetDescription}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </Form.Group>
         </Form>

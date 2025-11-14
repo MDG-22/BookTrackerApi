@@ -17,56 +17,58 @@ const BookItem = ({ lecture, onUpdate, onDelete }) => {
     rating,
     status,
     pageCount,
-    BookId,
-    BookTitle,
-    AuthorName,
-    AuthorId,
-    StartDate,
-    FinishDate
+    bookId,
+    bookTitle,
+    authorName,
+    authorId,
+    startDate,
+    finishDate
   } = lecture;
 
-  const title = BookTitle || "Sin título";
-  const authorName = AuthorName || "Desconocido";
+  const title = bookTitle || "Sin título";
+  const author = authorName || "Desconocido";
 
-  // Estados de edición
   const [editStatus, setStatus] = useState(status || "");
   const [editRating, setRating] = useState(rating ?? "");
-  const [editPageCount, setPageCount] = useState(pageCount ?? 0);
-  const [editStarted, setEditStarted] = useState(StartDate ? StartDate.slice(0,10) : "");
-  const [editFinished, setEditFinished] = useState(FinishDate ? FinishDate.slice(0,10) : "");
+  const [editPageCount, setPageCount] = useState(pageCount != null ? pageCount.toString() : "");
+  const [editStarted, setEditStarted] = useState(startDate ? startDate.slice(0,10) : "");
+  const [editFinished, setEditFinished] = useState(finishDate ? finishDate.slice(0,10) : "");
   const [isEditing, setIsEditing] = useState(false);
 
-  // Estados del book
   const [bookData, setBookData] = useState({ pages: 0, coverUrl: null });
 
   useEffect(() => {
-    if (BookId) {
-      fetchBook(BookId)
+    if (bookId) {
+      fetchBook(bookId)
         .then(data => {
           setBookData({
-            pages: data.Pages,
-            coverUrl: data.CoverUrl
+            pages: data.pages,
+            coverUrl: data.coverUrl
           });
         })
         .catch(err => console.error("Error fetching book:", err));
     }
-  }, [BookId]);
+  }, [bookId]);
 
-  // Navegación
-  const handleClick = () => navigate(`/books/${BookId}`);
-  const handleAuthorClick = () => AuthorId && navigate(`/authors/${AuthorId}`);
+  const handleClick = () => navigate(`/books/${bookId}`);
+  const handleAuthorClick = () => authorId && navigate(`/authors/${authorId}`);
 
-  // Edit handlers
   const handleEdit = () => setIsEditing(true);
   const handleCloseEdit = () => setIsEditing(false);
 
   const handleEditStatus = (e) => {
-    const newStatus = e.target.value;
+    const newStatus = parseInt(e.target.value, 10);
     setStatus(newStatus);
 
     const today = new Date().toISOString().slice(0, 10);
-    if (newStatus === 'Leyendo' && !editStarted) setEditStarted(today);
-    if (newStatus === 'Leído') {
+
+    if (newStatus === 1 && !editStarted) {
+      // Reading
+      setEditStarted(today);
+    }
+
+    if (newStatus === 2) {
+      // Read
       setPageCount(bookData.pages);
       if (!editFinished) setEditFinished(today);
       if (!editStarted) setEditStarted(today);
@@ -76,26 +78,44 @@ const BookItem = ({ lecture, onUpdate, onDelete }) => {
   const handleEditStartedDate = (e) => setEditStarted(e.target.value);
   const handleEditFinishedDate = (e) => setEditFinished(e.target.value);
   const handleEditRating = (e) => setRating(e.target.value !== "" ? parseInt(e.target.value) : "");
-  const handleEditPageCount = (e) => setPageCount(e.target.value !== "" ? parseInt(e.target.value) : 0);
+  
+  const handleEditPageCount = (e) => {
+    const value = e.target.value;
+    setPageCount(value === "" ? "" : parseInt(value, 10));
+  }
 
-  // Guardar cambios
+
   const handleSaveEdit = async () => {
+
+    if (editPageCount < 0) {
+      errorToast("El número de páginas no puede ser negativo");
+      return;
+    }
+
+    if (editPageCount > bookData.pages) {
+      errorToast(`El número de páginas no puede superar las ${bookData.pages} del libro`);
+      return;
+    }
+
     try {
-      const updated = await updateLecture(token, id, {
-        Status: editStatus || null,
-        Rating: editRating !== "" ? editRating : null,
-        PageCount: editPageCount !== "" ? editPageCount : null,
-        StartDate: editStarted || null,
-        FinishDate: editFinished || null
-      });
+      const newLectureData = {
+        Status: editStatus,
+        Rating: editRating !== "" ? Number(editRating) : null,
+        PageCount: editPageCount !== "" ? Number(editPageCount) : null,
+        StartDate: editStarted ? new Date(editStarted).toISOString() : null,
+        FinishDate: editFinished ? new Date(editFinished).toISOString() : null
+
+      };
+
+      const updated = await updateLecture(token, id, newLectureData);
       onUpdate(updated);
       setIsEditing(false);
     } catch (error) {
       console.error("Error al actualizar", error);
+      errorToast("Error al actualizar la lectura");
     }
   }
 
-  // Eliminar lectura
   const handleDelete = async () => {
     try {
       await deleteLecture(token, id);
@@ -110,7 +130,7 @@ const BookItem = ({ lecture, onUpdate, onDelete }) => {
       <Row>
         <Col xs={1} className='list-item-cover'>
           <CardImg
-            src={bookData.coverUrl || '/images/default-cover.png'} // portada por defecto
+            src={bookData.coverUrl || '/images/default-cover.png'}
             className='clickable cover'
             onClick={handleClick}
           />
@@ -123,15 +143,19 @@ const BookItem = ({ lecture, onUpdate, onDelete }) => {
         </Col>
 
         <Col xs={2}>
-          {isEditing ? (
-            <FormSelect value={editStatus || ""} onChange={handleEditStatus}>
-              <option value=""></option>
-              <option value="Para leer">{translate("Para leer")}</option>
-              <option value="Leyendo">{translate("Leyendo")}</option>
-              <option value="Leído">{translate("Leído")}</option>
-            </FormSelect>
+        {isEditing ? (
+          <FormSelect value={editStatus || ""} onChange={handleEditStatus}>
+            <option value={0}>{translate("Para leer")}</option>
+            <option value={1}>{translate("Leyendo")}</option>
+            <option value={2}>{translate("Leído")}</option>
+          </FormSelect>
           ) : (
-            translate(status)
+            translate(
+              status === 0 ? "Para leer" :
+              status === 1 ? "Leyendo"   :
+              status === 2 ? "Leído"     :
+              ""
+  )
           )}
         </Col>
 
@@ -156,14 +180,15 @@ const BookItem = ({ lecture, onUpdate, onDelete }) => {
                   className="me-1"
                   style={{ width: '50px' }}
                   step="1"
-                  value={editPageCount ?? 0}
+                  value={editPageCount}
                   onChange={handleEditPageCount}
-                  disabled={editStatus !== 'Leyendo'}
+                  disabled={editStatus !== 1}
                 />
+
                 <span> / {bookData.pages}</span>
               </>
             ) : (
-              (status === 'Leído' || status === 'Para leer') ? bookData.pages : `${pageCount} / ${bookData.pages}`
+              (status === 2 || status === 0) ? bookData.pages : `${pageCount} / ${bookData.pages}`
             )}
           </FormGroup>
         </Col>

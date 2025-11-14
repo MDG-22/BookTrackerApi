@@ -18,76 +18,88 @@ namespace Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Author>().HasData(
- new Author
- {
-     Id = 1,
-     Name = "J. R. R. Tolkien",
-     Description = "John Ronald Reuel Tolkien (1892-1973) fue un filólogo y escritor británico, autor de obras como El hobbit y El Señor de los Anillos. Nacido en Bloemfontein (Sudáfrica) y criado en Inglaterra, se casó con Edith Bratt en 1916, con quien tuvo cuatro hijos. Vivió con ella hasta quedar viudo en 1971."
- },
+        new Author
+        {
+            Id = 1,
+            Name = "J. R. R. Tolkien",
+            ImageUrl = "https://www.bosshunting.com.au/wp-content/uploads/2020/05/t1.jpg",
+            Description = "John Ronald Reuel Tolkien (1892-1973) fue un filólogo y escritor británico, autor de obras como El hobbit y El Señor de los Anillos. Nacido en Bloemfontein (Sudáfrica) y criado en Inglaterra, se casó con Edith Bratt en 1916, con quien tuvo cuatro hijos. Vivió con ella hasta quedar viudo en 1971."
+        },
         new Author
         {
             Id = 2,
             Name = "Agatha Christie",
+            ImageUrl = "https://tse3.mm.bing.net/th/id/OIP.V15M1N_UMTof6UzO94jlgQHaJj?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
             Description = "Agatha Christie (1890-1976) fue una escritora británica de novelas policiales, considerada la reina del misterio. Nacida en Torquay, Inglaterra, se casó primero con Archibald Christie, con quien tuvo una hija, Rosalind. Tras divorciarse, se casó con el arqueólogo Max Mallowan, con quien permaneció casada hasta su muerte."
         },
         new Author
         {
             Id = 3,
             Name = "George Orwell",
+            ImageUrl = "https://bibliotecasma.org/wp-content/uploads/2022/11/George-Orwell-1-1.png",
             Description = "George Orwell (1903-1950), seudónimo de Eric Arthur Blair, fue un escritor y periodista británico conocido por Rebelión en la granja y 1984. Nació en la India británica y creció en Inglaterra. Se casó con Eileen O’Shaughnessy, quien falleció en 1945, quedando viudo. Más tarde se casó con Sonia Brownell y adoptó un hijo, Richard."
         },
         new Author
         {
             Id = 4,
             Name = "Rick Riordan",
+            ImageUrl = "https://i.pinimg.com/originals/73/3b/86/733b8638810a7dfcd4160db157128875.gif",
             Description = "Rick Riordan (1964) es un escritor estadounidense de fantasía juvenil, creador de la saga Percy Jackson. Nació en San Antonio, Texas. Está casado con Becky (Rebecca) Klahn desde 1985 y tienen dos hijos, Haley y Patrick. Ha trabajado como profesor antes de dedicarse por completo a la escritura."
         },
         new Author
         {
             Id = 5,
             Name = "Cassandra Clare",
+            ImageUrl = "https://tse1.mm.bing.net/th/id/OIP.sP-1mw0awgaUEQ5ahDUpFAHaLG?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
             Description = "Cassandra Clare (1973), cuyo nombre real es Judith Rumelt, es una escritora estadounidense de fantasía urbana, conocida por la saga Cazadores de Sombras. Nació de padres estadounidenses en Teherán y creció en distintos países. Está casada con Joshua Lewis; no tienen hijos y viven en Massachusetts con varios gatos."
         },
         new Author
         {
             Id = 6,
             Name = "Gaston Leroux",
+            ImageUrl = "https://tse4.mm.bing.net/th/id/OIP.wzijbixIFiITPjzvgI4BJAAAAA?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
             Description = "Gaston Leroux (1868-1927) fue un novelista y periodista francés, célebre por El Fantasma de la Ópera. Nació en París y trabajó como reportero antes de dedicarse a la ficción. Se casó con Marie Lefranc y, tras enviudar, con Jeanne Cayatte; tuvo dos hijos y pasó sus últimos años en Niza."
         },
         new Author
         {
             Id = 7,
             Name = "Antoine de Saint-Exupéry",
+            ImageUrl = "https://th.bing.com/th/id/R.fe8ff145ddb31643dadfeac3f4ee2107?rik=fnhs31gxkzhg3A&pid=ImgRaw&r=0",
             Description = "Antoine de Saint-Exupéry (1900-1944) fue un aviador y escritor francés, autor de El Principito. Nació en Lyon en una familia de pequeña nobleza. Se casó con la artista salvadoreña Consuelo Suncín; la pareja no tuvo hijos. Desapareció en una misión aérea durante la Segunda Guerra Mundial."
         },
         new Author
         {
             Id = 8,
             Name = "Gabriel García Márquez",
+            ImageUrl = "https://th.bing.com/th/id/R.364745447bbd86b72f843d5b9b26538a?rik=FwNy7zKQi9Co2w&riu=http%3a%2f%2f2.bp.blogspot.com%2f-JKg3gXA6QzM%2fU_0_S622fJI%2fAAAAAAAAABc%2ffwJBk8OvqGY%2fs1600%2fmarquez-gabriel-adv-obit-slide-lp84-superjumbo.jpg&ehk=5UOdn%2bobrrpQBErBABnnsD0TO1WefGcBUjERzkwwxzw%3d&risl=&pid=ImgRaw&r=0",
             Description = "Gabriel García Márquez (1927-2014) fue un escritor y periodista colombiano, figura central del realismo mágico y autor de Cien años de soledad. Nació en Aracataca, Colombia. Se casó con Mercedes Barcha en 1958 y tuvieron dos hijos, Rodrigo y Gonzalo. Vivió entre América Latina, México y Europa."
         },
         new Author
         {
             Id = 9,
             Name = "Jules Verne",
+            ImageUrl = "https://th.bing.com/th/id/R.de731caf0809d43f69366c90de317c08?rik=V%2fBPn4FKPKT2Sw&pid=ImgRaw&r=0",
             Description = "Jules Verne (1828-1905) fue un novelista francés pionero de la ciencia ficción, conocido por obras como La vuelta al mundo en 80 días y Veinte mil leguas de viaje submarino. Nacido en Nantes, se casó con Honorine Morel en 1857, con quien tuvo un hijo, Michel, y fue padrastro de sus dos hijas."
         },
         new Author
         {
             Id = 10,
             Name = "Suzanne Collins",
+            ImageUrl = "https://th.bing.com/th/id/R.01cc2a03a16a4ca2716b27ce98df419f?rik=%2bj0SHM%2fqlk2f6w&pid=ImgRaw&r=0",
             Description = "Suzanne Collins (1962) es una escritora estadounidense, creadora de la trilogía Los Juegos del Hambre. Nació en Hartford, Connecticut. Estuvo casada muchos años con el actor Charles “Cap” Pryor y es madre de dos hijos, Charlie e Isabel. Comenzó su carrera escribiendo para televisión infantil."
         },
         new Author
         {
             Id = 11,
             Name = "James Dashner",
+            ImageUrl = "https://m.media-amazon.com/images/S/amzn-author-media-prod/c0iiih99mtos73tgn0ahtjlrjk._SY600_.jpg",
             Description = "James Dashner (1972) es un escritor estadounidense de literatura juvenil y ciencia ficción, conocido por la saga The Maze Runner. Nació en Georgia y se crió en una familia numerosa. Está casado con Lynette Anderson y tienen cuatro hijos; viven en Utah."
         },
         new Author
         {
             Id = 12,
             Name = "Stephen King",
+            ImageUrl = "https://tse2.mm.bing.net/th/id/OIP.ZPALPbO3ohjPHAId4pkK3wHaEK?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
             Description = "Stephen King (1947) es un escritor estadounidense, maestro del terror y el suspense, autor de It, El resplandor y muchas otras novelas. Nació en Portland, Maine. Está casado con la escritora Tabitha Spruce desde 1971 y tienen tres hijos, Naomi, Joe y Owen."
         }
             );
@@ -101,8 +113,8 @@ namespace Infrastructure.Data
             );
 
             modelBuilder.Entity<User>().HasData(
-                new User { Id = 1, Username = "Manu", Email = "manu@gmail.com", Role = UserRole.SuperAdmin, Password = "123456" },
-                new User { Id = 2, Username = "Mati", Email = "mati@gmail.com", Role = UserRole.SuperAdmin, Password = "123456" }
+                new User { Id = 1, Username = "Manu", Email = "manu@gmail.com", Role = UserRole.SuperAdmin, Password = "Manu123" },
+                new User { Id = 2, Username = "Mati", Email = "mati@gmail.com", Role = UserRole.SuperAdmin, Password = "Mati123" }
             );
 
             modelBuilder.Entity<Book>().HasData(

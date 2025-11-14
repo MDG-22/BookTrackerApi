@@ -1,67 +1,66 @@
 import { useState, useContext } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import { AuthenticationContext } from '../services/auth/AuthContextProvider.jsx';
 import { successToast, errorToast } from '../notifications/notifications.js';
 import { updateUser, deleteUser } from './settings.services.js';
 import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './Settings.css';
 import { useTranslate } from '../hooks/translation/UseTranslate.jsx';
-
-
+import { validateEmail, validatePassword } from '../auth/auth.services.js';
 
 function Settings() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { id, token, handleUserLogout } = useContext(AuthenticationContext);
   const navigate = useNavigate();
   const translate = useTranslate();
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
   const handleSaveChanges = async () => {
+    if (!email && !password) {
+      return errorToast(translate('no_data_to_update') || 'No ingresaste ningún dato para actualizar');
+    }
+
+    if (email && !validateEmail(email)) {
+      return errorToast("El mail ingresado es inválido");
+    }
+
+    if (password && !validatePassword(password, 6, 12, true, true)) {
+      return errorToast("La contraseña debe tener entre 6 y 12 caracteres. Al menos 1 mayúscula y 1 número");
+    }
+
+    const updateData = {};
+    if (email) updateData.email = email;
+    if (password) updateData.password = password;
+
     try {
-      const updateData = {};
-      if (email) updateData.email = email;
-      if (password) updateData.password = password;
-
-      if (Object.keys(updateData).length === 0) {
-        return errorToast('No ingresaste ningún dato para actualizar');
-      }
-
+      setIsLoading(true);
       const updatedUser = await updateUser(id, token, updateData);
-      successToast('Datos actualizados con éxito');
+      successToast(translate('update_success'));
       console.log('Usuario actualizado:', updatedUser);
+      setEmail('');
+      setPassword('');
     } catch (error) {
-      errorToast(error.message || 'Error al actualizar el usuario');
+      errorToast(error.message || translate('update_error'));
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleDeleteAccount = async () => {
     try {
+      setIsLoading(true);
       await deleteUser(id, token);
-      successToast('Cuenta eliminada exitosamente');
+      successToast(translate('account_deleted') || 'Cuenta eliminada exitosamente');
       handleUserLogout();
       navigate('/');
     } catch (error) {
-      errorToast(error.message || 'Error al eliminar la cuenta');
+      errorToast(error.message || translate('delete_error') || 'Error al eliminar la cuenta');
+    } finally {
+      setIsLoading(false);
+      setShowDeleteConfirmation(false);
     }
-  };
-
-  const openDeleteConfirmation = () => {
-    setShowDeleteConfirmation(true);
-  };
-
-  const closeDeleteConfirmation = () => {
-    setShowDeleteConfirmation(false);
   };
 
   return (
@@ -76,7 +75,7 @@ function Settings() {
             type="email"
             placeholder={translate("new_email")}
             value={email}
-            onChange={handleEmailChange}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </Form.Group>
 
@@ -86,26 +85,38 @@ function Settings() {
             type="password"
             placeholder={translate("new_password")}
             value={password}
-            onChange={handlePasswordChange}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
 
-        <Button variant="primary" type="button" onClick={handleSaveChanges}>
-          {translate("save_changes")}
+        <Button
+          variant="primary"
+          type="button"
+          onClick={handleSaveChanges}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <Spinner animation="border" size="sm" className="me-2" />
+              {translate("saving") || "Guardando..."}
+            </>
+          ) : (
+            translate("save_changes")
+          )}
         </Button>
       </Form>
 
       <hr />
 
-      <div className="mt-4">
+      <div className="danger-zone mt-4">
         <h3>{translate("danger_zone")}</h3>
         <p>{translate("delete_account_warning")}</p>
-        <Button variant="danger" onClick={openDeleteConfirmation}>
+        <Button variant="danger" onClick={() => setShowDeleteConfirmation(true)}>
           {translate("delete_account")}
         </Button>
       </div>
 
-      <Modal show={showDeleteConfirmation} onHide={closeDeleteConfirmation} centered>
+      <Modal show={showDeleteConfirmation} onHide={() => setShowDeleteConfirmation(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>{translate("confirm_delete_account")}</Modal.Title>
         </Modal.Header>
@@ -114,11 +125,22 @@ function Settings() {
           <p><strong>{translate("action_not_reversible")}</strong></p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={closeDeleteConfirmation}>
+          <Button variant="secondary" onClick={() => setShowDeleteConfirmation(false)}>
             {translate("cancel")}
           </Button>
-          <Button variant="danger" onClick={handleDeleteAccount}>
-            {translate("delete_account")}
+          <Button
+            variant="danger"
+            onClick={handleDeleteAccount}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <Spinner animation="border" size="sm" className="me-2" />
+                {translate("deleting") || "Eliminando..."}
+              </>
+            ) : (
+              translate("delete_account")
+            )}
           </Button>
         </Modal.Footer>
       </Modal>

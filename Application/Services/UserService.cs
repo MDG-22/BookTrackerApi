@@ -54,11 +54,17 @@ namespace Application.Services
             if (!string.IsNullOrWhiteSpace(dto.Username))
                 user.Username = dto.Username;
 
-            if (!string.IsNullOrWhiteSpace(dto.AvatarUrl))
-                user.AvatarUrl = dto.AvatarUrl;
+             if (dto.AvatarUrl != null)
+                 user.AvatarUrl = dto.AvatarUrl;
 
             if (!string.IsNullOrWhiteSpace(dto.Description))
                 user.Description = dto.Description;
+
+            if (!string.IsNullOrWhiteSpace(dto.Email))
+                user.Email = dto.Email;
+
+            if (!string.IsNullOrWhiteSpace(dto.Password))
+                user.Password = dto.Password;
 
             var updatedUser = _userRepository.Update(user);
             return UserDto.ToDto(updatedUser);
